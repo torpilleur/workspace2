@@ -97,6 +97,7 @@
     <Compile Include="click me control.xaml.cs">
       <DependentUpon>click me control.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Database\Grid_data_panel_trophe.cs" />
     <Compile Include="Database\SNAP_DATABASE.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

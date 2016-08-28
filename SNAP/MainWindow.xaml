@@ -1367,7 +1367,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
+                        <Grid MouseLeftButtonDown="Boutton_ajouter_trophe_MouseLeftButtonDown">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="52*"/>
                                 <ColumnDefinition Width="3*"/>
@@ -1629,6 +1629,237 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="#FF688CAF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false" Background="Black">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                            <Grid Grid.Column="1" Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" OpacityMask="Black"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonStyle18" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid MouseLeftButtonDown="Popup_bouton_ajouter_trophe_MouseLeftButtonDown">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <RadialGradientBrush>
+                                                            <GradientStop Color="#FF071F32" Offset="0.051"/>
+                                                            <GradientStop Color="#FF2095F7" Offset="1"/>
+                                                        </RadialGradientBrush>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="rectangle" RadiusY="12.669" RadiusX="12.669" RenderTransformOrigin="0.5,0.5" Stroke="#FF080807" StrokeThickness="2">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF071F32" Offset="0.051"/>
+                                        <GradientStop Color="#FF2095F7" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-0.813"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle19" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid MouseLeftButtonDown="Popup_bouton_annuler_trophe_MouseleftButtonDown">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <RadialGradientBrush>
+                                                            <GradientStop Color="#FF071F32" Offset="0.051"/>
+                                                            <GradientStop Color="#FF2095F7" Offset="1"/>
+                                                        </RadialGradientBrush>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="rectangle" RadiusY="12.669" RadiusX="12.669" RenderTransformOrigin="0.5,0.5" Stroke="#FF080807" StrokeThickness="2">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF071F32" Offset="0.051"/>
+                                        <GradientStop Color="#FF2095F7" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-0.813"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle20" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid MouseLeftButtonDown="Boutton_supprimer_trophe_MouseLeftButtonDown">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="52*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="click_me">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <RadialGradientBrush>
+                                                            <GradientStop Color="Black" Offset="0"/>
+                                                            <GradientStop Color="#FFF509AA" Offset="1"/>
+                                                        </RadialGradientBrush>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="click_me">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="Black" Offset="0"/>
+                                                            <GradientStop Color="#FF665962" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="click_me" RadiusY="8.769" RadiusX="8.769" Stroke="Black" Grid.ColumnSpan="2">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF2B051A" Offset="0"/>
+                                        <GradientStop Color="#FF860F50" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="26.84,0.646,20.713,0.646"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Window.Resources>
     <Grid x:Name="panel_general">
@@ -1732,13 +1963,13 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button x:Name="bouton_terrain" Content="Button" Margin="20.5,204.069,19.367,213.5" Style="{DynamicResource ButtonStyle1}" ToolTip="TERRAIN /SCENARIO">
+            <Button x:Name="bouton_trophe" Content="Button" Margin="20.5,204.069,19.367,213.5" Style="{DynamicResource ButtonStyle1}" ToolTip="TERRAIN /SCENARIO">
                 <Button.Resources>
                     <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid x:Name="bouton_terrain" MouseLeftButtonDown="bouton_terrain_MouseLeftButtonDown">
+                                    <Grid x:Name="bouton_trophe" MouseLeftButtonDown="bouton_trophe_MouseLeftButtonDown">
                                         <Grid.Background>
                                             <ImageBrush ImageSource="terrain-ville_008.jpg"/>
                                         </Grid.Background>
@@ -1748,7 +1979,7 @@
                                                 <VisualState x:Name="MouseOver"/>
                                                 <VisualState x:Name="Pressed">
                                                     <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="bouton_terrain_conteneur">
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="bouton_trophe_conteneur">
                                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                                 <DiscreteObjectKeyFrame.Value>
                                                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -1758,28 +1989,28 @@
                                                                 </DiscreteObjectKeyFrame.Value>
                                                             </DiscreteObjectKeyFrame>
                                                         </ObjectAnimationUsingKeyFrames>
-                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="bouton_terrain_conteneur">
+                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="bouton_trophe_conteneur">
                                                             <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
                                                         </DoubleAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Disabled">
                                                     <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="bouton_terrain_conteneur">
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="bouton_trophe_conteneur">
                                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                                 <DiscreteObjectKeyFrame.Value>
                                                                     <SolidColorBrush Color="#FFDE0808"/>
                                                                 </DiscreteObjectKeyFrame.Value>
                                                             </DiscreteObjectKeyFrame>
                                                         </ObjectAnimationUsingKeyFrames>
-                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="bouton_terrain_conteneur">
+                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="bouton_trophe_conteneur">
                                                             <EasingDoubleKeyFrame KeyTime="0" Value="0.4"/>
                                                         </DoubleAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
-                                        <Rectangle x:Name="bouton_terrain_conteneur" Fill="{x:Null}" RadiusY="8.769" RadiusX="8.769" Stroke="#FF72F01B" StrokeThickness="2"/>
+                                        <Rectangle x:Name="bouton_trophe_conteneur" Fill="{x:Null}" RadiusY="8.769" RadiusX="8.769" Stroke="#FF72F01B" StrokeThickness="2"/>
                                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="">
                                             <ContentPresenter.OpacityMask>
                                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -1919,7 +2150,7 @@
                 </Button.Background>
             </Button>
         </Grid>
-        <Grid x:Name="panel_joueur" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+        <Grid x:Name="panel_joueur" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_joueur" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Fill="#FF33444F" Stroke="#FFB1F97E"/>
             <Grid x:Name="panel_bouton_joueur" HorizontalAlignment="Left" Margin="10,87,0,100.572" Width="98">
                 <Rectangle x:Name="visual_panel_bouton_joueur" RadiusY="21" RadiusX="21" StrokeThickness="2" Fill="#FF02132B" Opacity="0.5" HorizontalAlignment="Right" Margin="0,-80,-819.5,0" Width="842" Height="55.5" VerticalAlignment="Top"/>
@@ -1981,40 +2212,53 @@
             </Popup>
             <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="24,70,0,0" VerticalAlignment="Top" Height="501" Width="975" Background="#FF33444F" Foreground="#FF7A99C7" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False" FontSize="18.667" FontFamily="Rockwell" MaxColumnWidth="200" IsReadOnly="True" IsTextSearchCaseSensitive="True" CanUserSortColumns="False" RowBackground="#FF1B2C3D" SelectionMode="Single" BorderBrush="{x:Null}" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" ColumnWidth="400">
                 <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="c1" ClipboardContentBinding="{x:Null}" Header="NOM" Width="190" Binding="{Binding Nom}"/>
-                    <DataGridTextColumn x:Name="c2" ClipboardContentBinding="{x:Null}" Header="SURNOM" Width="192" Binding="{Binding Surnom}"/>
-                    <DataGridTextColumn x:Name="c3" Binding="{Binding Arme_primaire}" ClipboardContentBinding="{x:Null}" Header="ARME PRIMAIRE" Width="195"/>
-                    <DataGridTextColumn x:Name="c4" Binding="{Binding Arme_secondaire}" ClipboardContentBinding="{x:Null}" Header="ARME SECONDAIRE" Width="195"/>
-                    <DataGridTextColumn x:Name="c5" Binding="{Binding Profil}" ClipboardContentBinding="{x:Null}" Header="PROFIL" Width="195"/>
+                    <DataGridTextColumn x:Name="c1" ClipboardContentBinding="{x:Null}" Header="NOM" Width="190" Binding="{Binding Nom}" Foreground="#FF5077B0"/>
+                    <DataGridTextColumn x:Name="c2" ClipboardContentBinding="{x:Null}" Header="SURNOM" Width="192" Binding="{Binding Surnom}" Foreground="#FF5077B0"/>
+                    <DataGridTextColumn x:Name="c3" Binding="{Binding Arme_primaire}" ClipboardContentBinding="{x:Null}" Header="ARME PRIMAIRE" Width="195" Foreground="#FF5077B0"/>
+                    <DataGridTextColumn x:Name="c4" Binding="{Binding Arme_secondaire}" ClipboardContentBinding="{x:Null}" Header="ARME SECONDAIRE" Width="195" Foreground="#FF5077B0"/>
+                    <DataGridTextColumn x:Name="c5" Binding="{Binding Profil}" ClipboardContentBinding="{x:Null}" Header="PROFIL" Width="195" Foreground="#FF5077B0"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
         <Grid x:Name="panel_stats" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_stats" Fill="#FF073000" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2"/>
         </Grid>
-        <Grid x:Name="panel_terrain" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
-            <Rectangle x:Name="visuel_panel_terrain" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
-            <RichTextBox x:Name="Text_descriptif" HorizontalAlignment="Right" Margin="0,111.5,28.25,34.072" Width="432">
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text="RichTextBox"/>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
-            <Grid x:Name="panel_bouton_scenario" Height="55" Margin="85,7,89.75,0" VerticalAlignment="Top">
-                <Rectangle x:Name="visual_panel_bouton_scenario" Fill="#FF02132B" RadiusY="21" RadiusX="21" StrokeThickness="2" Opacity="0.5"/>
-                <Button x:Name="button_ajout_scenario" Content="Ajouter" HorizontalAlignment="Left" Margin="79,10,0,10.5" Width="166.5" Style="{DynamicResource ButtonStyle13}" Foreground="#FFF5EFEF" FontFamily="Lucida Calligraphy" FontSize="18.667"/>
+        <Grid x:Name="panel_trophe" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+            <Rectangle x:Name="visuel_panel_trophe" Fill="#FF33444F" Margin="0,-1,10.133,-0.428" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
+            <Grid x:Name="panel_bouton_trophe" Height="55" Margin="85,7,89.75,0" VerticalAlignment="Top">
+                <Rectangle x:Name="visual_panel_bouton_trophe" Fill="#FF02132B" RadiusY="21" RadiusX="21" StrokeThickness="2" Opacity="0.5"/>
+                <Button x:Name="button_ajout_trophe" Content="Ajouter" HorizontalAlignment="Left" Margin="79,10,0,10.5" Width="166.5" Style="{DynamicResource ButtonStyle13}" Foreground="#FFF5EFEF" FontFamily="Lucida Calligraphy" FontSize="18.667"/>
             </Grid>
-            <Button x:Name="button_ajout_scenario_Copy" Content="Supprimer" Margin="0,17,181.25,0" Style="{DynamicResource ButtonStyle14}" Foreground="#FFF5EFEF" FontFamily="Lucida Calligraphy" FontSize="18.667" Height="34.5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="166.5"/>
-            <Button x:Name="button_ajout_scenario_Copy1" Content="Modifier" Margin="422.5,17,428.75,0" Style="{DynamicResource ButtonStyle15}" Foreground="#FFF5EFEF" FontFamily="Lucida Calligraphy" FontSize="18.667" Height="34.5" VerticalAlignment="Top"/>
-            <TextBox x:Name="label_descriptif" HorizontalAlignment="Right" Height="31" Margin="0,75.5,233.75,0" TextWrapping="Wrap" Text="Description du scenario" VerticalAlignment="Top" Width="222" TextDecorations="Underline" FontSize="18.667" Background="{x:Null}" Foreground="#FF7A99C7" BorderBrush="{x:Null}" SelectionBrush="{x:Null}" IsReadOnly="True"/>
-            <DataGrid x:Name="Scenario_datagrid" HorizontalAlignment="Left" Margin="37,106.5,0,22.072" Width="235.5">
+            <Button x:Name="button_supprimer_trophe" Content="Supprimer" Margin="0,17,181.25,0" Style="{DynamicResource ButtonStyle20}" Foreground="#FFF5EFEF" FontFamily="Lucida Calligraphy" FontSize="18.667" Height="34.5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="166.5"/>
+            <DataGrid x:Name="trophe_datagrid" HorizontalAlignment="Right" Margin="0,67,797.133,24.572" Width="211" Background="#FF33444F" Foreground="#FF7A99C7" FontFamily="Rockwell" FontSize="18.667" MinColumnWidth="155" MaxColumnWidth="200" BorderBrush="{x:Null}" RowBackground="#FF1B2C3D" CanUserResizeRows="False" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" SelectionMode="Single" IsReadOnly="True" IsTextSearchCaseSensitive="True" SelectionChanged="trophe_datagrid_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn CanUserReorder="False" FontSize="18.667" FontFamily="Rockwell" Header="Liste des scenarios"/>
+                    <DataGridTextColumn x:Name="nom_trophe" Binding="{Binding Nom}" ClipboardContentBinding="{x:Null}" Header="Trophés" Foreground="#FF5077B0" MaxWidth="200" MinWidth="200" CanUserSort="False" SortMemberPath="Trophés" CanUserResize="False" CanUserReorder="False"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <Popup x:Name="Popup_Rens_Trophe" Margin="0,0,0.133,-264.428" AllowsTransparency="True" Placement="Absolute" IsManipulationEnabled="True" PopupAnimation="Slide" d:IsHidden="True">
+                <Grid x:Name="Popup_content_Rens_Joueur1" Height="588.77" Width="934.274" RenderTransformOrigin="0.5,0.5" IsManipulationEnabled="True">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="0.233"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Rectangle x:Name="Visuel_content_Rens_Joueur1" Fill="#FF021C42" Margin="205.147,139.285,254.577,0" Stroke="White" RadiusY="41.459" RadiusX="41.459" Opacity="0.9" StrokeThickness="2" IsManipulationEnabled="True"/>
+                    <TextBlock x:Name="Label_Rens_Trophe" HorizontalAlignment="Left" Height="43.48" Margin="229.391,139.285,0,0" TextWrapping="Wrap" Text="Ajouter un trophe" VerticalAlignment="Top" Width="268.518" Foreground="#FFF7F4F4" FontSize="21.333" FontFamily="Lucida Bright" FontWeight="Bold" TextDecorations="{x:Null}"/>
+                    <TextBlock x:Name="Text_nom_trophe" HorizontalAlignment="Left" Height="27.577" Margin="229.391,210.908,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="176.381" FontSize="18.667" Foreground="#FFF9F9F9"><Run Text="Nom "/><Run Text="                    "/><Run Text=":"/><Run Text=" "/></TextBlock>
+                    <TextBlock x:Name="Text_description_trophe" HorizontalAlignment="Left" Margin="229,275,0,255.77" TextWrapping="Wrap" Width="165" FontSize="18.667" Foreground="#FFF9F9F9"><Run Text="Conditions d'obtention      "/><Run Text="    "/><Run Text=":"/></TextBlock>
+                    <Button x:Name="Bouton_ajouter_popup_Rens_trophe" Content="Ajouter" HorizontalAlignment="Left" Height="35.462" Margin="258.946,0,0,22.387" Style="{DynamicResource ButtonStyle18}" VerticalAlignment="Bottom" Width="134.834" FontSize="18.667" FontFamily="Lucida Bright" Foreground="#FFF1ECEC"/>
+                    <Button x:Name="Bouton_annuler_popup_Rens_trophe" Content="Annuler" Height="35.462" Margin="0,0,310.468,22.387" Style="{DynamicResource ButtonStyle19}" VerticalAlignment="Bottom" FontSize="18.667" FontFamily="Lucida Bright" Foreground="#FFF1ECEC" HorizontalAlignment="Right" Width="134.834"/>
+                    <TextBox x:Name="Rens_nom_trophe" HorizontalAlignment="Left" Height="23" Margin="411,215,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213"/>
+                    <TextBox x:Name="Rens_description_trophe" HorizontalAlignment="Left" Height="207" Margin="411,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213"/>
+                </Grid>
+            </Popup>
+            <TextBlock x:Name="Text_Condition_obtention_trophe" HorizontalAlignment="Left" Height="23" Margin="244,72,0,0" TextWrapping="Wrap" Text="Conditions d'obtention" VerticalAlignment="Top" Width="240" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline"/>
+            <TextBox x:Name="textBox_condition_trophe" HorizontalAlignment="Left" Height="218" Margin="244,120,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="408" Background="#FF02132B" Opacity="0.5" Foreground="#FFAACBEE" FontSize="18.667"/>
         </Grid>
-        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_partie" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
             <DataGrid x:Name="partie_datagrid" HorizontalAlignment="Right" Margin="0,23,10,36.572" Width="314.75" Background="#FF33444F" Foreground="#FF7A99C7" FontFamily="Rockwell" FontSize="18.667" MinColumnWidth="155" MaxColumnWidth="200">
                 <DataGrid.Columns>
@@ -2032,7 +2276,7 @@
             <Button x:Name="button_supp_joueurs_partie" Content="&lt;&lt;&lt;" HorizontalAlignment="Left" Height="33" Margin="212,0,0,268.572" VerticalAlignment="Bottom" Width="33" ToolTip="Supprimer un joueur" Style="{DynamicResource ButtonStyle17}" Foreground="#FF02060E"/>
             <TextBlock x:Name="Text_nom_partie" HorizontalAlignment="Left" Height="23" Margin="164,54,0,0" TextWrapping="Wrap" Text="Nom de la partie" VerticalAlignment="Top" Width="162" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline"/>
             <TextBox x:Name="textBox_partie_nom" HorizontalAlignment="Left" Height="23" Margin="152,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="135" ToolTip="Entrer un nom de partie"/>
-            <TextBlock x:Name="Text_nom_panel_partie" HorizontalAlignment="Left" Height="23" Margin="378,0,0,0" TextWrapping="Wrap" Text="Enregistrement  de résultats d'une partie" VerticalAlignment="Top" Width="310" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline"/>
+            <TextBlock x:Name="Text_nom_panel_partie" HorizontalAlignment="Left" Height="23" Margin="63,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline"><Run Text="Enregistre"/><Run Text="r une "/><Run Text="partie"/></TextBlock>
         </Grid>
         <Grid x:Name="panel_configuration" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_configuration" Fill="#FF1752CF" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2"/>
