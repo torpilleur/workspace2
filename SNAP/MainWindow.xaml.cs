@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SNAP.Database;
+using System.Threading;
 
 namespace SNAP
 {
@@ -34,8 +35,10 @@ namespace SNAP
         public Grid_data_panel_joueurs Grid_panel_joueurs = new Grid_data_panel_joueurs();
         public Grid_data_panel_trophe Grid_panel_trophe = new Grid_data_panel_trophe();
         public Grid_data_panel_partie Grid_panel_partie = new Grid_data_panel_partie();
-        /***Variable globales projet***/
+        public Grid_data_Occurence Data_Occurence = new Grid_data_Occurence();
 
+        /***Variable globales projet***/
+        private int index_joueur_partie = 0;
 
 
 
@@ -93,9 +96,8 @@ namespace SNAP
             panel_trophe.Visibility = Visibility.Hidden;
             panel_joueur.Visibility = Visibility.Hidden;
             panel_stats.Visibility = Visibility.Hidden;
-            //TODOajouter l'affichage de la datagrid liste de partie
-            //todo affichage liste de joueurs dans la liste
-            //Récupération des données via la base de données
+ 
+            //affichage liste de joueurs dans la liste
             List<Entity_joueurs> List_table_joueur = Ctx_database_SNAP.Table_Joueurs.ToList();
             //réinitialiser le tableau d'affichage
             Joueurs_disponibles_list.Items.Clear();
@@ -105,6 +107,8 @@ namespace SNAP
                 String Surnom = List_table_joueur[i].Surnom;
                 Joueurs_disponibles_list.Items.Add(Surnom);
             }
+            //afficher la liste des parties
+            Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP, partie_datagrid);
         }
 
         private void bouton_configuration_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -329,28 +333,105 @@ namespace SNAP
 
                 //ajouter le joueur en base de donnée aprés vérification de l'existant (pas deux joueurs avec le meme nom)
                 Success_ajout_partie = Grid_panel_partie.Ajouter_Partie(Ctx_database_SNAP, textBox_partie_nom.Text, Calendrier_partie.Text, Joueurs_participant_list.Items.Count);
-                //Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP, partie_dataGrid);
-/* gestion du nombre de kill et peuplement de la base de donnée Occurences
-                //vider les champs
-                Rens_nom.Text = "";
-                Rens_surnom.Text = "";
-                Rens_arme_primaire.Text = "";
-                Rens_arme_secondaire.Text = "";
-                Rens_profil.Text = "";
-              
-                //afficher la popup
-                Popup_Rens_Joueur.IsOpen = true;
-                //rendre inactif les autres boutons
-                button_modifier_joueur.IsEnabled = false;
-                button_supprimer_joueur.IsEnabled = false;
-                bouton_stats.IsEnabled = false;
-                bouton_configuration.IsEnabled = false;
-                bouton_trophe.IsEnabled = false;
-                bouton_partie.IsEnabled = false;
+               
+                //si partie enregistrée => récupération des résultats de la partie
+                if (Success_ajout_partie)
+                {
+                    
+           
+                    //afficher la popup
+                    Popup_Resultats_partie.IsOpen = true;
+                    //rendre inactif les autres boutons
+                    Boutton_partie_manuelle.IsEnabled = false;
+                    bouton_stats.IsEnabled = false;
+                    bouton_configuration.IsEnabled = false;
+                    bouton_trophe.IsEnabled = false;
+                    bouton_partie.IsEnabled = false;
+                    bouton_joueurs.IsEnabled = false;
+                    //init les champs pour récupérer les stats
+                    Num_kill.Value = 0;
+                    Num_death.Value = 0;
+                    Num_assist.Value = 0;
+                    Label_Resultats_partie_titre.Text = "Renseignez les stats du joueur " + Joueurs_participant_list.Items[0].ToString();
+                    
 
-            */
+                }
+
+            
 
             }
+        }
+        
+        private void Popup_Resultat_bouton_ajouter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (index_joueur_partie < Joueurs_participant_list.Items.Count)
+            {
+                //peupler la base de données Occurence.
+
+                Data_Occurence.Ajouter_Occurence(Ctx_database_SNAP, textBox_partie_nom.Text, Joueurs_participant_list.Items[index_joueur_partie].ToString(), "NA", Num_kill.Value,Num_death.Value,Num_assist.Value);
+
+                
+            }
+            
+            index_joueur_partie++;
+            if (index_joueur_partie < Joueurs_participant_list.Items.Count)
+            {
+                //init les champs pour le prochain joueur
+                Label_Resultats_partie_titre.Text = "Renseignez les stats du joueur " + Joueurs_participant_list.Items[index_joueur_partie].ToString();
+              
+                Num_kill.Value = 0;
+                Num_death.Value = 0;
+                Num_assist.Value = 0;
+            }
+            //si cest le dernier jouer de la liste:
+            else
+            {
+                // fermer la popup
+                Popup_Resultats_partie.IsOpen = false;
+                //rendre actif les autres boutons
+                Boutton_partie_manuelle.IsEnabled = true;
+                bouton_stats.IsEnabled = true;
+                bouton_configuration.IsEnabled = true;
+                bouton_trophe.IsEnabled = true;
+                bouton_partie.IsEnabled = true;
+                bouton_joueurs.IsEnabled = true;
+                //reinit les champs
+                index_joueur_partie = 0;
+                textBox_partie_nom.Text = "";
+                Joueurs_participant_list.Items.Clear();
+                Calendrier_partie.Text = "";
+
+
+                Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP,partie_datagrid);
+            }
+            
+        }
+        private void Boutton_supprimer_partie_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Boutton_partie_manuelle.IsEnabled = false;
+            bouton_stats.IsEnabled = false;
+            bouton_configuration.IsEnabled = false;
+            bouton_trophe.IsEnabled = false;
+            bouton_joueurs.IsEnabled = false;
+            //récupération du nomm du joueur et suppression de la base de données aprés une demande de confirmation.
+            Grid_data_panel_partie Grid_panel_partie_selected = (Grid_data_panel_partie)partie_datagrid.SelectedItem;
+            if (Grid_panel_partie_selected != null)
+            {
+                Data_Occurence.Supprimer_Occurence(Ctx_database_SNAP, Grid_panel_partie_selected);
+                Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP, partie_datagrid);
+            }
+            else {
+                MessageBox.Show("Veuillez séléctionner une partie dans la liste");
+
+
+            }
+            Boutton_partie_manuelle.IsEnabled = true;
+            bouton_stats.IsEnabled = true;
+            bouton_configuration.IsEnabled = true;
+            bouton_trophe.IsEnabled = true;
+            bouton_joueurs.IsEnabled = true;
+            //supprimer la partie et toutes les entrées qui ont le même nom de partie dans la table occurence.
+      
         }
         /**************************************************************************************
         ******************************actions panel trophes***********************************
@@ -450,5 +531,7 @@ namespace SNAP
             bouton_partie.IsEnabled = true;
 
         }
+
+      
     }
 }

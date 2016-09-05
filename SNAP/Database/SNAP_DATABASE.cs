@@ -77,9 +77,9 @@
     {
         public int ID { get; set; }
 
-        public int?  Partie_ID { get; set; }
-        public int? Joueurs_ID { get; set; }
-        public int? Trophe_ID { get; set; }
+        public string Partie_ID { get; set; }
+        public string Joueurs_ID { get; set; }
+        public string Trophe_ID { get; set; }
         public int? Nombre_kill { get; set; }
         public int? Nombre_death { get; set; }
         public int? Nombre_assist { get; set; }

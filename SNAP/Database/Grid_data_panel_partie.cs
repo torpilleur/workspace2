@@ -22,10 +22,28 @@ namespace SNAP.Database
         public string Date { get; set; }
         public int Nbjoueurs { get; set; }
 
+        public void Afficher_Partie(SNAP_DATABASE Ctx_database_SNAP, DataGrid dataGrid)
+        {
+            //Récupération des données via la base de données
+            List<Entity_partie> List_table_partie = Ctx_database_SNAP.Table_Parties.ToList();
+            //réinitialiser le tableau d'affichage
+            dataGrid.Items.Clear();
+           
 
+
+            for (int i = 0; i < List_table_partie.Count(); i++)
+            {
+                Grid_data_panel_partie partie_i = new Grid_data_panel_partie();
+                partie_i.Nom = List_table_partie[i].Nom;
+                partie_i.Date = List_table_partie[i].Date;
+
+                dataGrid.Items.Add(partie_i);
+            }
+           
+        }
         public bool Ajouter_Partie(SNAP_DATABASE Contexte_database, string nom, string date, int nb_joueur)
         {
-            //regarder si le trophe est déjà présent
+            //regarder si la partie est déjà présent
             
                 var Liste_parties = Contexte_database.Database.SqlQuery<string>("SELECT Nom FROM Entity_partie").ToList();
                 for (int i = 0; i < Liste_parties.Count(); i++)
@@ -49,8 +67,8 @@ namespace SNAP.Database
                 Contexte_database.SaveChanges();
                 return true;
          }
+       
 
-        
     }
 
 }
