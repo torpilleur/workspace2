@@ -83,6 +83,7 @@
         public int? Nombre_kill { get; set; }
         public int? Nombre_death { get; set; }
         public int? Nombre_assist { get; set; }
+        public int? facteur_de_risque { get; set; }
 
 
     }

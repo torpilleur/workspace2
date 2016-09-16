@@ -2097,7 +2097,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button x:Name="bouton_trophe" Content="Button" Margin="20.5,204.069,19.367,213.5" Style="{DynamicResource ButtonStyle1}" ToolTip="TERRAIN /SCENARIO">
+            <Button x:Name="bouton_trophe" Content="Button" Margin="20.5,204.069,19.367,213.5" Style="{DynamicResource ButtonStyle1}" ToolTip="TROPHES">
                 <Button.Resources>
                     <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
                         <Setter Property="Template">
@@ -2354,8 +2354,9 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid x:Name="panel_stats" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
-            <Rectangle x:Name="visuel_panel_stats" Fill="#FF073000" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2"/>
+        <Grid x:Name="panel_stats" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+            <Rectangle x:Name="visuel_panel_stats" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
+            <Rectangle x:Name="panel_stats_infos" Fill="#FF33444F" Margin="24,23,343.266,36.144" RadiusY="29" RadiusX="29" Stroke="#FF688CAF" StrokeThickness="2"/>
         </Grid>
         <Grid x:Name="panel_trophe" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_trophe" Fill="#FF33444F" Margin="0,-1,10.133,-0.428" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
@@ -2392,7 +2393,7 @@
             <TextBlock x:Name="Text_Condition_obtention_trophe" HorizontalAlignment="Left" Height="23" Margin="244,72,0,0" TextWrapping="Wrap" Text="Conditions d'obtention" VerticalAlignment="Top" Width="240" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline"/>
             <TextBox x:Name="textBox_condition_trophe" HorizontalAlignment="Left" Height="218" Margin="244,120,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="408" Background="#FF02132B" Opacity="0.5" Foreground="#FFAACBEE" FontSize="18.667"/>
         </Grid>
-        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_partie" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
             <DataGrid x:Name="partie_datagrid" HorizontalAlignment="Right" Margin="0,23,10.133,106.572" Width="328" Background="#FF33444F" Foreground="#FF7A99C7" FontFamily="Rockwell" FontSize="18.667" MinColumnWidth="155" MaxColumnWidth="200" IsReadOnly="True" IsTextSearchCaseSensitive="True" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" RowBackground="#FF1B2C3D" SelectionMode="Single" CanUserResizeRows="False">
                 <DataGrid.Columns>

@@ -128,7 +128,7 @@
     </Compile>
     <Compile Include="Database\Grid_data_panel_trophe.cs" />
     <Compile Include="Database\SNAP_DATABASE.cs" />
-    <Compile Include="Database\Statistiques.cs" />
+    <Compile Include="Algorithme\Statistiques.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

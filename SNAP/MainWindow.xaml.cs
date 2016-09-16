@@ -36,16 +36,22 @@ namespace SNAP
         public Grid_data_panel_trophe Grid_panel_trophe = new Grid_data_panel_trophe();
         public Grid_data_panel_partie Grid_panel_partie = new Grid_data_panel_partie();
         public Grid_data_Occurence Data_Occurence = new Grid_data_Occurence();
+        public Statistiques Stats_SNAP = new Statistiques();
 
         /***Variable globales projet***/
         private int index_joueur_partie = 0;
+        //liste des trophées
+        public string[,] Liste_trophes = new string[10, 2] { { "Mort dans l'oeuf", "Celui qui est mort le plus de fois au cour de la partie" }, { "Folie meurtrière", "Celui qui fait le plus de kill dans la partie" }, { "Poule mouillée", "Celui qui a le facteur de risque le plus bas au cours de la partie" }, { "Hero", "Celui qui a le facteur de risque le plus élevé au cours de la partie" }, { "Docteur", "Celui qui a le plus d'assist au cours de la partie" }, { "Chair humaine", "ratio inférieur à 1 au cours de la partie" }, { "Survivant", "ratio compris entre 1 et 1,5 au cours de la partie" }, { "Commando", "ratio compris entre 1,5 et 3 au cours de la partie" }, { "Tueur en série", "ratio supérieur à 3 au cours de la partie" }, { "Meilleur Joueur", "rMeilleur joueur de la partie" } };
+        public string[,]Liste_classements = new string [24, 2] { { "Niveau 0", "0" }, { "Débutant total", "1" }, { "Débutant", "4" }, { "Inexpérimenté", "8" }, { "Bleu", "12" }, { "Novice", "20" }, { "Sous la moyenne", "28" }, { "Dans la moyenne", "35" }, { "Niveau raisonnable", "50" }, { "Au dessus de la moyenne", "65" }, { "Assez compétent", "80" }, { "Compétent", "95" }, { "Extrêmement compétent", "115" }, { "Vétéran", "130" }, { "Remarquable", "145" }, { "Extrêmement remarquable", "180" }, { "Général", "220" }, {"Commandant", "270" }, { "Maréchal", "320" }, { "Héros", "400" }, { "Superstar", "500" }, { "Elite", "600" }, { "Légende", "800" }, { "pillier de guerre", "1000" } };
+        //liste des classements (nom + nbpointref)
 
 
 
 
 
 
-        /**************************************GESTION DES EVENEMENTS DU SOFT********************************/
+
+            /**************************************GESTION DES EVENEMENTS DU SOFT********************************/
 
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -364,13 +370,27 @@ namespace SNAP
         
         private void Popup_Resultat_bouton_ajouter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            
             if (index_joueur_partie < Joueurs_participant_list.Items.Count)
             {
+                //calculer le facteur de risque:
+                int? frisque = Num_kill.Value + 2 * Num_death.Value + Num_assist.Value;
+                //calculer le ratio:
+                float? ratio_joueur;
+                if (Num_death.Value == 0)
+                {
+                    ratio_joueur = Num_kill.Value;
+                }
+                else ratio_joueur = Num_kill.Value / Num_death.Value;
+               
                 //peupler la base de données Occurence.
+                Data_Occurence.Ajouter_Occurence(Ctx_database_SNAP, textBox_partie_nom.Text, Joueurs_participant_list.Items[index_joueur_partie].ToString(), "NA", Num_kill.Value,Num_death.Value,Num_assist.Value,frisque);
+                // mettre à jour la base de donnée des joueurs.
+                Grid_panel_joueurs.Update_Addpartie(Ctx_database_SNAP, Joueurs_participant_list.Items[index_joueur_partie].ToString(), Num_kill.Value, Num_death.Value, Num_assist.Value,ratio_joueur);
 
-                Data_Occurence.Ajouter_Occurence(Ctx_database_SNAP, textBox_partie_nom.Text, Joueurs_participant_list.Items[index_joueur_partie].ToString(), "NA", Num_kill.Value,Num_death.Value,Num_assist.Value);
+                // calcul des stats partie
+                Stats_SNAP.Calcul_stats(Ctx_database_SNAP, textBox_partie_nom.Text);
 
-                
             }
             
             index_joueur_partie++;
@@ -383,7 +403,7 @@ namespace SNAP
                 Num_death.Value = 0;
                 Num_assist.Value = 0;
             }
-            //si cest le dernier jouer de la liste:
+            //si cest le dernier joueur de la liste:
             else
             {
                 // fermer la popup
@@ -397,12 +417,16 @@ namespace SNAP
                 bouton_joueurs.IsEnabled = true;
                 //reinit les champs
                 index_joueur_partie = 0;
-                textBox_partie_nom.Text = "";
+                
                 Joueurs_participant_list.Items.Clear();
                 Calendrier_partie.Text = "";
 
 
                 Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP,partie_datagrid);
+                //calculer les stats et peupler le reste des bases
+              //TODO  Stats_SNAP.Calcul_stats(Ctx_database_SNAP, textBox_partie_nom.Text);
+                textBox_partie_nom.Text = "";
+
             }
             
         }

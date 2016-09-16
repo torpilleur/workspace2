@@ -71,6 +71,14 @@ namespace SNAP
                     Arme_primaire = Arme_primaire_joueur,
                     Arme_secondaire = Arme_secondaire_joueur,
                     Profil = Profil_joueur,
+                    Nombre_kill_tot = 0,
+                    Nombre_death_tot = 0,
+                    Nombre_assistance_tot = 0,
+                    Ratio_tot = 0,
+                    Classement = "NA",
+                    Nombre_de_point = 0,
+                    Nombre_de_participation = 0,
+                    Nom_classement = "Niveau 0",
                 };
 
                 Contexte_database.Table_Joueurs.Add(Joueur);
@@ -127,6 +135,50 @@ namespace SNAP
             //suppression du joueur en base de donnée et sauvegarde
             Contexte_database.Table_Joueurs.Remove(Joueur_to_delete);
             Contexte_database.SaveChanges();
+        }
+
+
+        public void Update_Addpartie(SNAP_DATABASE Contexte_database, string nom_joueur, int? Num_kill, int? Num_death,int? Num_assist, float? Num_ratio)
+            {
+            
+            //récupérer les stats avant l'ajout de cette partie afin de pouvoir les ajouter.
+            var nb_kill = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_kill_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur + "'");
+            var nb_death = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_death_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur + "'");
+            var nb_assist = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_assistance_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur + "'");
+            var nb_ratio = Contexte_database.Database.SqlQuery<float?>("SELECT Ratio_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur + "'");
+            var nb_participation = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_de_participation FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur + "'");
+
+            //calcul des nouvelles stats
+            int? nbkill_tot = nb_kill.ElementAt(0) + Num_kill;
+            int? nbdeath_tot = nb_death.ElementAt(0) + Num_death;
+            int? nbassist_tot = nb_assist.ElementAt(0) + Num_assist;
+            int? nbparticipation_tot = nb_participation.ElementAt(0) + 1;
+            float? ratio_tot = (nb_ratio.ElementAt(0)* nb_participation.ElementAt(0) + Num_ratio)/ nbparticipation_tot;
+
+            //mise à jour des stats
+          /* Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_kill_tot = '" + nbkill_tot + "' WHERE Surnom ='"+ nom_joueur+"'");
+            Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_death_tot = '" + nbdeath_tot + "' WHERE Surnom ='" + nom_joueur + "'");
+            Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_assistance_tot = '" + nbassist_tot + "' WHERE Surnom ='" + nom_joueur + "'");
+            Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Ratio_tot = '" + ratio_tot.ToString() + "' WHERE Surnom ='" + nom_joueur + "'");
+            Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_de_participation = '" + nbparticipation_tot + "' WHERE Surnom ='" + nom_joueur + "'");
+            Contexte_database.Entry(Joueur_tomodify).Reload();*/
+
+            var index_joueur = Contexte_database.Database.SqlQuery<int>("SELECT id FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur + "'").ToList().ElementAt(0);
+            var Joueur_tomodify = Contexte_database.Table_Joueurs.Find(index_joueur);
+            Entity_joueurs updatedUser = Joueur_tomodify;
+            updatedUser.Nombre_kill_tot = nbkill_tot;
+            updatedUser.Nombre_death_tot = nbdeath_tot;
+            updatedUser.Nombre_assistance_tot = nbassist_tot;
+            updatedUser.Ratio_tot = ratio_tot;
+            updatedUser.Nombre_de_participation = nbparticipation_tot;
+
+            // mise à jour et sauvegarde du contexte.
+            Contexte_database.Entry(Joueur_tomodify).CurrentValues.SetValues(updatedUser);
+         
+            
+            Contexte_database.SaveChanges();
+
+
         }
 
     }

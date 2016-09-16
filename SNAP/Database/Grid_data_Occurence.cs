@@ -26,7 +26,7 @@ namespace SNAP.Database
         public int? nombre_assist { get; set; }
 
 
-        public void Ajouter_Occurence(SNAP_DATABASE Contexte_database, string partie, string joueur, string trophe, int? nbkill, int? nbdeath, int? nbassist)
+        public void Ajouter_Occurence(SNAP_DATABASE Contexte_database, string partie, string joueur, string trophe, int? nbkill, int? nbdeath, int? nbassist,int? frisque)
         {
             //faire la lisaison entr la partie les joueur et les trophes
 
@@ -40,8 +40,9 @@ namespace SNAP.Database
                 Nombre_kill =nbkill,
                 Nombre_death=nbdeath,
                 Nombre_assist=nbassist,
+                facteur_de_risque=frisque,
 
-              };
+            };
 
                   Contexte_database.Table_Occurence.Add(Occurence);
                   Contexte_database.SaveChanges();
