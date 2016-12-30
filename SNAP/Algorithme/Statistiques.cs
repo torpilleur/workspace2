@@ -17,14 +17,19 @@ using SNAP;
 
 namespace SNAP.Database
 {
-   public class Statistiques
+    public class Statistiques
     {
-
-
-
-        public void Calcul_stats(SNAP_DATABASE Ctx_database_SNAP, string nom_partie,string[] Nom_classement_ref, int[] point_classement_ref)
+        struct classement
         {
-           
+            public string Nom { get; set; }
+
+            public int Point { get; set; }
+        }
+
+
+        public void Calcul_stats(SNAP_DATABASE Ctx_database_SNAP, string nom_partie, string[] Nom_classement_ref, int[] point_classement_ref)
+        {
+
             //récupération de la liste des joueurs ayant le plus de kill
             var most_kill_p = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT MAX(Nombre_kill) FROM Entity_Occurence WHERE Partie_ID= '" + nom_partie + "'").ToList();
             var Joueur_most_kill = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE Partie_ID= '" + nom_partie + "' AND Nombre_kill='" + most_kill_p.ElementAt(0).ToString() + "'").ToList();
@@ -152,35 +157,25 @@ namespace SNAP.Database
             Ctx_database_SNAP.SaveChanges();
 
             // récupération de la liste des joueurs pour la partie donnée
-           
-            Attribution_points_classement(nom_partie, Ctx_database_SNAP, Nom_classement_ref,point_classement_ref);
+
+            Attribution_points_classement(nom_partie, Ctx_database_SNAP, Nom_classement_ref, point_classement_ref);
 
         }
-          public void Attribution_points_classement(string nom_partie, SNAP_DATABASE Ctx_database_SNAP, string[] Nom_classement_ref,int[] point_classement_ref)
+        public void Attribution_points_classement(string nom_partie, SNAP_DATABASE Ctx_database_SNAP, string[] Nom_classement_ref, int[] point_classement_ref)
         {
-            //Système de point:
-            int Point_meilleur_joueur = 6;
-            int Point_ratio_0 = -1;
-            int Point_ratio_1 = 1;
-            int Point_ratio_3 = 2;
-            int Point_trophee_max_kill = 2;
-            int Point_trophee_max_FC = 2;
-            int Point_trophee_max_Assist = 2;
-            int Point_trophee_max_Death = -1;
-            int Point_trophee_Less_FC = -2;
-            
+
 
 
             var Liste_occurence_partie = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT ID FROM Entity_Occurence WHERE Partie_ID= '" + nom_partie + "'").ToList();
-            for (int i = 0; i<Liste_occurence_partie.Count; i++)
+            for (int i = 0; i < Liste_occurence_partie.Count; i++)
             {
                 string trophee_max_FC = "non";
                 string trophee_max_death = "non";
                 string trophee_less_FC = "non";
                 string trophee_max_kill = "non";
                 string trophee_max_assist = "non";
-                
-                
+
+
 
 
                 //attribution des points pour chacun des joueurs
@@ -188,9 +183,9 @@ namespace SNAP.Database
                 //Surnom du joueur
                 var surnom_joueur = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i] + "'").ToList().ElementAt(0);
                 //ratio
-                var ratio_joueur = Ctx_database_SNAP.Database.SqlQuery<float>("SELECT ratio FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i]+ "'").ToList().ElementAt(0);
-                    //trophee:
-                var trophee= Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Trophe_ID FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i] + "'").ToList().ElementAt(0);
+                var ratio_joueur = Ctx_database_SNAP.Database.SqlQuery<float>("SELECT ratio FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i] + "'").ToList().ElementAt(0);
+                //trophee:
+                var trophee = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Trophe_ID FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i] + "'").ToList().ElementAt(0);
                 if (trophee.Contains("Héros")) trophee_max_FC = "oui";
                 if (trophee.Contains("mort dans l'oeuf")) trophee_max_death = "oui";
                 if (trophee.Contains("Poule mouillée")) trophee_less_FC = "oui";
@@ -199,7 +194,7 @@ namespace SNAP.Database
                 //vainqueur
                 var Bestplayer = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Best_player FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i] + "'").ToList().ElementAt(0);
                 // niveau actuel du joueur
-                var level_J= Ctx_database_SNAP.Database.SqlQuery<int>("SELECT Niveau FROM Entity_joueurs WHERE Surnom = '" + surnom_joueur + "'").ToList().ElementAt(0);
+                var level_J = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT Niveau FROM Entity_joueurs WHERE Surnom = '" + surnom_joueur + "'").ToList().ElementAt(0);
                 //nombre de point actuel:
                 var Point_J = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT Nombre_de_point FROM Entity_joueurs WHERE Surnom = '" + surnom_joueur + "'").ToList().ElementAt(0);
 
@@ -219,7 +214,7 @@ namespace SNAP.Database
                         if (trophee_max_FC.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_kill.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_assist.Equals("oui")) New_val_point_J = New_val_point_J + 2;
-                        
+
 
                     }
                     if (ratio_joueur >= 3)
@@ -257,8 +252,8 @@ namespace SNAP.Database
                         if (trophee_max_kill.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_assist.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_less_FC.Equals("oui")) New_val_point_J = New_val_point_J - 2;
-                        if (trophee_max_death.Equals("oui")) New_val_point_J = New_val_point_J-1;
-                       
+                        if (trophee_max_death.Equals("oui")) New_val_point_J = New_val_point_J - 1;
+
 
                     }
                     if (ratio_joueur >= 3)
@@ -293,7 +288,7 @@ namespace SNAP.Database
                 {
                     //1: Vérification si c'est le meilleur joueur.
                     if (Bestplayer.Equals("oui")) New_val_point_J = New_val_point_J + 6;
-                   
+
 
                     //2:Vérification des trophée.=> gain ou perte de point selon le statut
                     else
@@ -301,8 +296,8 @@ namespace SNAP.Database
                         if (trophee_max_FC.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_kill.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_assist.Equals("oui")) New_val_point_J = New_val_point_J + 2;
-                        
-                      
+
+
                     }
                     if (ratio_joueur >= 3)
                     {
@@ -320,17 +315,17 @@ namespace SNAP.Database
                             {
                                 New_val_point_J = New_val_point_J + 1;
                             }
-                            
+
                         }
 
                     }
 
-                    if (trophee_less_FC.Equals("oui")|| trophee_max_death.Equals("oui")|| ratio_joueur<1) New_val_point_J = New_val_point_J - 30;
+                    if (trophee_less_FC.Equals("oui") || trophee_max_death.Equals("oui") || ratio_joueur < 1) New_val_point_J = New_val_point_J - 30;
                     //si pt<0 =>0
                     if (New_val_point_J < 0) New_val_point_J = 0;
                     //last: +1 pour la participation à la partie
                     New_val_point_J = New_val_point_J + 1;
-                   
+
 
 
                 }
@@ -345,7 +340,7 @@ namespace SNAP.Database
                         if (trophee_max_FC.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_kill.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_assist.Equals("oui")) New_val_point_J = New_val_point_J + 2;
-                    
+
 
                     }
                     if (ratio_joueur >= 3)
@@ -364,7 +359,7 @@ namespace SNAP.Database
                             {
                                 New_val_point_J = New_val_point_J + 1;
                             }
-                           
+
                         }
 
                     }
@@ -376,7 +371,7 @@ namespace SNAP.Database
 
 
                 }
-                if (level_J ==23)
+                if (level_J == 23)
                 {
                     //1: Vérification si c'est le meilleur joueur.
                     if (Bestplayer.Equals("oui")) New_val_point_J = New_val_point_J + 6;
@@ -387,7 +382,7 @@ namespace SNAP.Database
                         if (trophee_max_FC.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_kill.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_assist.Equals("oui")) New_val_point_J = New_val_point_J + 2;
-                     
+
 
                     }
                     if (ratio_joueur >= 3)
@@ -406,7 +401,7 @@ namespace SNAP.Database
                             {
                                 New_val_point_J = New_val_point_J + 1;
                             }
-                            
+
                         }
 
                     }
@@ -429,7 +424,7 @@ namespace SNAP.Database
                         if (trophee_max_FC.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_kill.Equals("oui")) New_val_point_J = New_val_point_J + 2;
                         if (trophee_max_assist.Equals("oui")) New_val_point_J = New_val_point_J + 2;
-                  
+
                     }
                     if (ratio_joueur >= 3)
                     {
@@ -447,7 +442,7 @@ namespace SNAP.Database
                             {
                                 New_val_point_J = New_val_point_J + 1;
                             }
-                            
+
                         }
 
                     }
@@ -473,18 +468,21 @@ namespace SNAP.Database
                         var Joueur_tomodify = Ctx_database_SNAP.Table_Joueurs.Find(index_joueur);
                         Entity_joueurs updatedUser = Joueur_tomodify;
                         updatedUser.Nombre_de_point = New_val_point_J;
-                        updatedUser.Niveau = j+1;
+                        updatedUser.Niveau = j + 1;
                         updatedUser.Nom_classement = Nom_classement_ref[j];
-                     
+
                         // mise à jour et sauvegarde du contexte.
                         Ctx_database_SNAP.Entry(Joueur_tomodify).CurrentValues.SetValues(updatedUser);
                         Ctx_database_SNAP.SaveChanges();
 
-                       
+                        //calcul du delta de point:
+                        int delta_point = New_val_point_J - Point_J;
                         var occ_tomodify = Ctx_database_SNAP.Table_Occurence.Find(Liste_occurence_partie[i]);
-                 
+
                         Entity_Occurence updatedOcc = occ_tomodify;
                         updatedOcc.Nombre_point = New_val_point_J;
+                        updatedOcc.Delta_point = delta_point;
+
                         // mise à jour et sauvegarde du contexte.
                         Ctx_database_SNAP.Entry(occ_tomodify).CurrentValues.SetValues(updatedOcc);
                         Ctx_database_SNAP.SaveChanges();
@@ -494,12 +492,77 @@ namespace SNAP.Database
 
 
             }
+            Classement_joueurs(Ctx_database_SNAP);
 
         }
 
-        
+        public void Classement_joueurs(SNAP_DATABASE Ctx_database_SNAP)
+        {
+            List<classement> Classement_n_tri=new List<classement>();
+            List<classement> Classement_tri = new List<classement>();
 
-    }
+            var ID = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT ID FROM Entity_joueurs").ToList();
+            for (int i=0;i<ID.Count();i++)
+            {
+                //récupération des points par joueurs
+                
+                var surnom_joueur = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Surnom FROM Entity_joueurs WHERE ID= '" + ID.ElementAt(i) + "'").ToList().ElementAt(0);
+                var Nombre_point = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT Nombre_de_point FROM Entity_joueurs WHERE ID= '" + ID.ElementAt(i) + "'").ToList().ElementAt(0);
+                Classement_n_tri.Add(new classement() { Nom = surnom_joueur, Point = Nombre_point });
+
+            }
+            //trier la liste obtenue
+            for (int i = 0; i < Classement_n_tri.Count; i++)
+            {
+                if (Classement_tri.Count == 0) Classement_tri.Add(Classement_n_tri.ElementAt(i));
+                else
+                {
+                    bool element_inser = false;
+                    int compteur = Classement_tri.Count;
+                    for (int j = 0; j < compteur; j++)
+                    {
+                        if (element_inser == false)
+                        {
+
+
+                            if (Classement_n_tri.ElementAt(i).Point >= Classement_tri.ElementAt(j).Point)
+                            {
+                                Classement_tri.Insert(j, Classement_n_tri.ElementAt(i));
+                                element_inser = true;
+                            }
+                            else
+                            {
+                                if (j == compteur - 1)
+                                {
+                                    Classement_tri.Add(Classement_n_tri.ElementAt(i));
+                                    element_inser = true;
+                                }
+                            }
+                           
+
+                        }
+                    }
+
+
+                }
+            }
+
+            for (int i = 0; i < Classement_tri.Count; i++)
+            {
+                
+                var index_joueur = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT id FROM Entity_Joueurs WHERE Surnom ='" + Classement_tri.ElementAt(i).Nom + "'").ToList().ElementAt(0);
+                var Joueur_tomodify = Ctx_database_SNAP.Table_Joueurs.Find(index_joueur);
+                Entity_joueurs updatedUser = Joueur_tomodify;
+                updatedUser.classement = i+1;
+                // mise à jour et sauvegarde du contexte.
+                Ctx_database_SNAP.Entry(Joueur_tomodify).CurrentValues.SetValues(updatedUser);
+                Ctx_database_SNAP.SaveChanges();
+
+            }
+
+        }
+
+        }
 
    
 }

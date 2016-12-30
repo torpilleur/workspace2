@@ -46,6 +46,7 @@
         public int? Nombre_de_participation { get; set; }
         public string Nom_classement { get; set; }
         public int? Nb_parties_won { get; set; }
+        public int? classement { get; set; }
 
     }
     public class Entity_partie
@@ -89,6 +90,7 @@
         public int? facteur_de_risque { get; set; }
         public string Best_player { get; set; }
         public int? Nombre_point { get; set; }
+        public int? Delta_point { get; set; }
 
 
     }

@@ -151,6 +151,10 @@
     <Compile Include="Migrations\201612301230547_last db.Designer.cs">
       <DependentUpon>201612301230547_last db.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612301523365_classement.cs" />
+    <Compile Include="Migrations\201612301523365_classement.Designer.cs">
+      <DependentUpon>201612301523365_classement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -176,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612301230547_last db.resx">
       <DependentUpon>201612301230547_last db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612301523365_classement.resx">
+      <DependentUpon>201612301523365_classement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

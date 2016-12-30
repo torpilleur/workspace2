@@ -80,6 +80,7 @@ namespace SNAP
                     Nombre_de_participation = 0,
                     Nom_classement = "Niveau 0",
                     Nb_parties_won = 0,
+                    classement = 0,
                 };
 
                 Contexte_database.Table_Joueurs.Add(Joueur);
