@@ -57,7 +57,7 @@ namespace SNAP.Database
             //trophée Hero
             index_occ = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT id FROM Entity_Occurence WHERE Partie_ID= '" + nom_partie + "' AND facteur_de_risque='" + most_Facteur_risque_p.ElementAt(0).ToString() + "'").ToList().ElementAt(0);
             occ_tomodify = Ctx_database_SNAP.Table_Occurence.Find(index_occ);
-            trophee = "Héro";
+            trophee = "Héros";
             updatedOcc = occ_tomodify;
             updatedOcc.Trophe_ID = updatedOcc.Trophe_ID + "\n" + trophee;
 
@@ -191,7 +191,7 @@ namespace SNAP.Database
                 var ratio_joueur = Ctx_database_SNAP.Database.SqlQuery<float>("SELECT ratio FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i]+ "'").ToList().ElementAt(0);
                     //trophee:
                 var trophee= Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Trophe_ID FROM Entity_Occurence WHERE ID= '" + Liste_occurence_partie[i] + "'").ToList().ElementAt(0);
-                if (trophee.Contains("Héro")) trophee_max_FC = "oui";
+                if (trophee.Contains("Héros")) trophee_max_FC = "oui";
                 if (trophee.Contains("mort dans l'oeuf")) trophee_max_death = "oui";
                 if (trophee.Contains("Poule mouillée")) trophee_less_FC = "oui";
                 if (trophee.Contains("Folie meurtrière")) trophee_max_kill = "oui";
