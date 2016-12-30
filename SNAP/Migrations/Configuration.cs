@@ -9,8 +9,7 @@ namespace SNAP.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            ContextKey = "SNAP.Database.SNAP_DATABASE";
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(SNAP.Database.SNAP_DATABASE context)

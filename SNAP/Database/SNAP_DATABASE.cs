@@ -14,7 +14,7 @@
         // Pour cibler une autre base de données et/ou un autre fournisseur de base de données, modifiez 
         // la chaîne de connexion « Model1 » dans le fichier de configuration de l'application.
         public SNAP_DATABASE()
-            : base("name=SNAP_DATABASE")
+            : base("name=SNAP.Properties.Settings.database2ConnectionString")
         {
         }
   
@@ -41,10 +41,11 @@
         public int? Nombre_death_tot { get; set; }
         public int? Nombre_assistance_tot { get; set; }
         public float? Ratio_tot { get; set; }
-        public string Classement { get; set; }
+        public int? Niveau { get; set; }
         public int? Nombre_de_point { get; set; }
         public int? Nombre_de_participation { get; set; }
         public string Nom_classement { get; set; }
+        public int? Nb_parties_won { get; set; }
 
     }
     public class Entity_partie
@@ -54,6 +55,7 @@
         public string Nom { get; set; }
         public string Date { get; set; }
         public int? Nombre_de_participant { get; set; }
+        public string Best_player { get; set; }
         
 
     }
@@ -83,7 +85,10 @@
         public int? Nombre_kill { get; set; }
         public int? Nombre_death { get; set; }
         public int? Nombre_assist { get; set; }
+        public float? ratio { get; set; }
         public int? facteur_de_risque { get; set; }
+        public string Best_player { get; set; }
+        public int? Nombre_point { get; set; }
 
 
     }

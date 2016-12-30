@@ -26,21 +26,23 @@ namespace SNAP.Database
         public int? nombre_assist { get; set; }
 
 
-        public void Ajouter_Occurence(SNAP_DATABASE Contexte_database, string partie, string joueur, string trophe, int? nbkill, int? nbdeath, int? nbassist,int? frisque)
+        public void Ajouter_Occurence(SNAP_DATABASE Contexte_database, string partie, string joueur, string trophe, int? nbkill, int? nbdeath, int? nbassist, float? Jratio,int? frisque,string bplayer)
         {
             //faire la lisaison entr la partie les joueur et les trophes
 
 
             Entity_Occurence Occurence = new Entity_Occurence
-              {
+            {
 
                 Partie_ID = partie,
-                Joueurs_ID =joueur,
-                Trophe_ID =trophe,
-                Nombre_kill =nbkill,
-                Nombre_death=nbdeath,
-                Nombre_assist=nbassist,
+                Joueurs_ID = joueur,
+                Trophe_ID = trophe,
+                Nombre_kill = nbkill,
+                Nombre_death = nbdeath,
+                Nombre_assist = nbassist,
+                ratio = Jratio,
                 facteur_de_risque=frisque,
+                Best_player= bplayer,
 
             };
 

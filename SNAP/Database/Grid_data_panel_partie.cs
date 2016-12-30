@@ -21,6 +21,7 @@ namespace SNAP.Database
         public string Nom { get; set; }
         public string Date { get; set; }
         public int Nbjoueurs { get; set; }
+    
 
         public void Afficher_Partie(SNAP_DATABASE Ctx_database_SNAP, DataGrid dataGrid)
         {

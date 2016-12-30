@@ -7,13 +7,13 @@ namespace SNAP.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addJoueur : IMigrationMetadata
+    public sealed partial class lastdb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addJoueur));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(lastdb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201608200716409_addJoueur"; }
+            get { return "201612301230547_last db"; }
         }
         
         string IMigrationMetadata.Source

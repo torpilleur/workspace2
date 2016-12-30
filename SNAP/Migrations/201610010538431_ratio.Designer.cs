@@ -7,13 +7,13 @@ namespace SNAP.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addpartie : IMigrationMetadata
+    public sealed partial class ratio : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addpartie));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ratio));
         
         string IMigrationMetadata.Id
         {
-            get { return "201608200953199_addpartie"; }
+            get { return "201610010538431_ratio"; }
         }
         
         string IMigrationMetadata.Source

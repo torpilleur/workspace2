@@ -3,7 +3,7 @@ namespace SNAP.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class addpartie : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -18,16 +18,38 @@ namespace SNAP.Migrations
                 .PrimaryKey(t => t.ID);
             
             CreateTable(
+                "dbo.Entity_joueurs",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Nom = c.String(),
+                        Surnom = c.String(),
+                        Arme_primaire = c.String(),
+                        Arme_secondaire = c.String(),
+                        Profil = c.String(),
+                        Nombre_kill_tot = c.Int(),
+                        Nombre_death_tot = c.Int(),
+                        Nombre_assistance_tot = c.Int(),
+                        Ratio_tot = c.Single(),
+                        Classement = c.String(),
+                        Nombre_de_point = c.Int(),
+                        Nombre_de_participation = c.Int(),
+                        Nom_classement = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
                 "dbo.Entity_Occurence",
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        Partie_ID = c.Int(),
-                        Joueurs_ID = c.Int(),
-                        Trophe_ID = c.Int(),
+                        Partie_ID = c.String(),
+                        Joueurs_ID = c.String(),
+                        Trophe_ID = c.String(),
                         Nombre_kill = c.Int(),
                         Nombre_death = c.Int(),
                         Nombre_assist = c.Int(),
+                        facteur_de_risque = c.Int(),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -52,27 +74,14 @@ namespace SNAP.Migrations
                     })
                 .PrimaryKey(t => t.ID);
             
-            AddColumn("dbo.Entity_joueurs", "Ratio_tot", c => c.Single());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_kill_tot", c => c.Int());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_death_tot", c => c.Int());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_assistance_tot", c => c.Int());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_de_point", c => c.Int());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_de_participation", c => c.Int());
-            DropColumn("dbo.Entity_joueurs", "Ratio");
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Entity_joueurs", "Ratio", c => c.String());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_de_participation", c => c.String());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_de_point", c => c.String());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_assistance_tot", c => c.String());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_death_tot", c => c.String());
-            AlterColumn("dbo.Entity_joueurs", "Nombre_kill_tot", c => c.String());
-            DropColumn("dbo.Entity_joueurs", "Ratio_tot");
             DropTable("dbo.Entity_trophes");
             DropTable("dbo.Entity_partie");
             DropTable("dbo.Entity_Occurence");
+            DropTable("dbo.Entity_joueurs");
             DropTable("dbo.Entity_Classement_Nom");
         }
     }
