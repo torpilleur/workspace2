@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Controls.DataVisualization.Charting;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -23,13 +24,6 @@ namespace SNAP
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            
-        }
-
         //création de la base de donnée pour le projet SNAP.
 
         public SNAP_DATABASE Ctx_database_SNAP = new SNAP_DATABASE();
@@ -37,6 +31,10 @@ namespace SNAP
         public Grid_data_panel_trophe Grid_panel_trophe = new Grid_data_panel_trophe();
         public Grid_data_panel_partie Grid_panel_partie = new Grid_data_panel_partie();
         public Grid_data_Occurence Data_Occurence = new Grid_data_Occurence();
+        public Grid_data_panel_stats Data_stats = new Grid_data_panel_stats();
+        public Grid_Ratio_chart Data_Ratio_chart = new Grid_Ratio_chart();
+
+
         public Statistiques Stats_SNAP = new Statistiques();
 
         /***Variable globales projet***/
@@ -44,10 +42,18 @@ namespace SNAP
         //liste des trophées
         public string[,] Liste_trophes = new string[10, 2] { { "Mort dans l'oeuf", "Celui qui est mort le plus de fois au cour de la partie" }, { "Folie meurtrière", "Celui qui fait le plus de kill dans la partie" }, { "Poule mouillée", "Celui qui a le facteur de risque le plus bas au cours de la partie" }, { "Hero", "Celui qui a le facteur de risque le plus élevé au cours de la partie" }, { "Docteur", "Celui qui a le plus d'assist au cours de la partie" }, { "Chair humaine", "ratio inférieur à 1 au cours de la partie" }, { "Survivant", "ratio compris entre 1 et 1,5 au cours de la partie" }, { "Commando", "ratio compris entre 1,5 et 3 au cours de la partie" }, { "Tueur en série", "ratio supérieur à 3 au cours de la partie" }, { "Meilleur Joueur", "Meilleur joueur de la partie" } };
 
-        public string[] Liste_Nom_classements = new string[24] { "Niveau0", "Débutant total", "Débutant", "Inexpérimenté", "Bleu", "Novice", "Sous la moyenne", "Dans la moyenne", "Niveau raisonnable", "Au dessus de la moyenne", "Assez compétent", "Compétent", "Extrêmement compétent", "Vétéran", "Remarquable", "Extrêmement remarquable", "Général", "Commandant", "Maréchal", "Héros", "Superstar", "pilier de guerre","Elite", "Légende" };
-        public int[] Liste_Niveau_classements = new int[24] { 0, 1, 4, 8, 12, 20, 28, 35, 50, 65,80, 95, 115, 130, 145, 180, 220, 270, 320, 400, 500, 600, 800, 1000};
+        public string[] Liste_Nom_classements = new string[24] { "Niveau0", "Débutant total", "Débutant", "Inexpérimenté", "Bleu", "Novice", "Sous la moyenne", "Dans la moyenne", "Niveau raisonnable", "Au dessus de la moyenne", "Assez compétent", "Compétent", "Extrêmement compétent", "Vétéran", "Remarquable", "Extrêmement remarquable", "Général", "Commandant", "Maréchal", "Héros", "Superstar", "pilier de guerre", "Elite", "Légende" };
+        public int[] Liste_Niveau_classements = new int[24] { 0, 1, 4, 8, 12, 20, 28, 35, 50, 65, 80, 95, 115, 130, 145, 180, 220, 270, 320, 400, 500, 600, 800, 1000 };
         //liste des classements (nom + nbpointref)
 
+        public MainWindow()
+        {
+            InitializeComponent();
+
+         
+        }
+
+        
 
 
 
@@ -86,6 +92,12 @@ namespace SNAP
             panel_trophe.Visibility = Visibility.Hidden;
             panel_partie.Visibility = Visibility.Hidden;
             panel_joueur.Visibility = Visibility.Hidden;
+            Data_stats.Afficher_Stats(Ctx_database_SNAP, dataGrid_stats);
+
+            Data_Ratio_chart.Afficher_Graphique(Ctx_database_SNAP, Ratio_area_series, Nb_point_area_series, Text_title_panel_detail_joueur.Text);
+
+
+
         }
 
         private void bouton_trophe_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -152,6 +164,7 @@ namespace SNAP
             Rens_arme_primaire.Text = "";
             Rens_arme_secondaire.Text = "";
             Rens_profil.Text = "";
+          
 
         }
 
@@ -457,7 +470,7 @@ namespace SNAP
             Grid_data_panel_partie Grid_panel_partie_selected = (Grid_data_panel_partie)partie_datagrid.SelectedItem;
             if (Grid_panel_partie_selected != null)
             {
-                Grid_panel_joueurs.Update_Suppartie(Ctx_database_SNAP, Grid_panel_partie_selected.Nom);
+                Grid_panel_joueurs.Update_Suppartie(Ctx_database_SNAP, Grid_panel_partie_selected.Nom,Stats_SNAP);
                 Data_Occurence.Supprimer_Occurence(Ctx_database_SNAP, Grid_panel_partie_selected);
                 Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP, partie_datagrid);
             }
@@ -573,6 +586,46 @@ namespace SNAP
 
         }
 
-      
+        private void dataGrid_stats_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            if (dataGrid_stats.SelectedIndex != -1)
+            {
+                string surnom_selected =((Grid_data_panel_stats) dataGrid_stats.SelectedItem).Surnom;
+                string grade = ((Grid_data_panel_stats)dataGrid_stats.SelectedItem).Nom_classement;
+
+
+                //récupérer les stats avant l'ajout de cette partie afin de pouvoir les ajouter.
+                var nb_kill = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_kill_tot FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                    var nb_death = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_death_tot FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                    var nb_assist = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_assistance_tot FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                    var nb_participation = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_de_participation FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                var Nb_parties_won = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nb_parties_won FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                var Nombre_de_point = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_de_point FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                var Ratio_tot = Ctx_database_SNAP.Database.SqlQuery< float?> ("SELECT Ratio_tot FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+
+                Text_title_panel_detail_joueur_grade.Text = grade;
+                Text_title_panel_detail_joueur_kill.Text = nb_kill.ToString();
+                Text_title_panel_detail_joueur_death.Text = nb_death.ToString();
+                Text_title_panel_detail_joueur_assist.Text = nb_assist.ToString();
+                Text_title_panel_detail_joueur_partie_won.Text = Nb_parties_won.ToString();
+                Text_title_panel_detail_joueur_nb_point.Text = Nombre_de_point.ToString();
+                Text_title_panel_detail_joueur_nb_participation.Text = nb_participation.ToString();
+                Text_title_panel_detail_joueur.Text = surnom_selected;
+                Text_title_panel_detail_joueur_ratio.Text = Ratio_tot.ToString();
+
+                Data_Ratio_chart.Afficher_Graphique(Ctx_database_SNAP, Ratio_area_series,Nb_point_area_series,Text_title_panel_detail_joueur.Text);
+              
+
+            }
+
+        }
+
+        private void button_detail_joueurs_partie_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //TODO
+        }
+
+       
     }
 }

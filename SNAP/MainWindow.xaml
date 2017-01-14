@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SNAP"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
-        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" xmlns:Database="clr-namespace:SNAP.Database" x:Class="SNAP.MainWindow"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" xmlns:Database="clr-namespace:SNAP.Database" xmlns:sparrowToolkit="http://sparrowtoolkit.codeplex.com/wpf" xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" x:Class="SNAP.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Visibility="Visible" Background="{x:Null}" IsManipulationEnabled="True" WindowStyle="None" SnapsToDevicePixels="True" AllowsTransparency="True" Cursor="Arrow" BorderThickness="0,0,1,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" AllowDrop="True" Width="1200" Height="700">
     <Window.Resources>
@@ -1994,6 +1994,43 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ButtonStyle23" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" MouseLeftButtonDown="button_detail_joueurs_partie_MouseLeftButtonDown">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Window.Resources>
     <Grid x:Name="panel_general">
@@ -2356,7 +2393,49 @@
         </Grid>
         <Grid x:Name="panel_stats" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
             <Rectangle x:Name="visuel_panel_stats" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
-            <Rectangle x:Name="panel_stats_infos" Fill="#FF33444F" Margin="24,23,343.266,36.144" RadiusY="29" RadiusX="29" Stroke="#FF688CAF" StrokeThickness="2"/>
+            <DataGrid x:Name="dataGrid_stats" HorizontalAlignment="Left" Margin="25.5,14.5,0,0" VerticalAlignment="Top" Height="288.072" Width="654.5" Background="#FF33444F" Foreground="#FF1F4D93" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False" FontSize="18.667" FontFamily="Rockwell" MaxColumnWidth="200" IsReadOnly="True" IsTextSearchCaseSensitive="True" RowBackground="#FF1B2C3D" SelectionMode="Single" BorderBrush="#FF5C9CC5" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" ColumnWidth="400" SelectionChanged="dataGrid_stats_SelectionChanged" SelectedIndex="0" IsSynchronizedWithCurrentItem="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="c6" ClipboardContentBinding="{x:Null}" Header="Classement" Width="110" Binding="{Binding classement}" Foreground="#FF5077B0" DisplayIndex="0" SortDirection="Ascending" CanUserSort="False" CanUserResize="False"/>
+                    <DataGridTextColumn x:Name="c7" ClipboardContentBinding="{x:Null}" Header="Surnom" Width="180" Binding="{Binding Surnom}" Foreground="#FF5077B0" CanUserSort="False"/>
+                    <DataGridTextColumn x:Name="c8" Binding="{Binding Nombre_de_point}" ClipboardContentBinding="{x:Null}" Header="Points" Width="90" Foreground="#FF5077B0" CanUserSort="False"/>
+                    <DataGridTextColumn x:Name="c9" Binding="{Binding Niveau}" ClipboardContentBinding="{x:Null}" Header="Niveau" Width="70" Foreground="#FF5077B0" CanUserSort="False"/>
+                    <DataGridTextColumn x:Name="c10" Binding="{Binding Nom_classement}" ClipboardContentBinding="{x:Null}" Header="Grade" Width="195" Foreground="#FF5077B0" CanUserSort="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Rectangle x:Name="visuel_panel_stats_Joueur" Fill="#FF193649" Margin="0,14.5,7,293" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF193649" HorizontalAlignment="Right" Width="327.75"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur" HorizontalAlignment="Right" Height="23" Margin="0,19.89,49.75,0" TextWrapping="Wrap" Text="Nom joueur" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="18.667" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy" HorizontalAlignment="Right" Height="23" Margin="0,106.39,117.25,0" TextWrapping="Wrap" Text="Nombre de participations: " VerticalAlignment="Top" Width="207" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy1" HorizontalAlignment="Right" Height="23" Margin="0,152.39,133.75,0" TextWrapping="Wrap" Text="Nombre de kill total: " VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy2" HorizontalAlignment="Right" Height="23" Margin="0,175.39,133.75,0" TextWrapping="Wrap" Text="Nombre de death total: " VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy3" HorizontalAlignment="Right" Margin="0,198.39,133.75,0" TextWrapping="Wrap" Text="Nombre d'assist total: " Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold" Height="23" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy4" HorizontalAlignment="Right" Height="23" Margin="0,83.39,133.75,0" TextWrapping="Wrap" Text="Nombre de points: " VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy5" Height="23" Margin="0,60.39,133.75,0" TextWrapping="Wrap" Text="Grade: " VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy6" HorizontalAlignment="Right" Height="23" Margin="0,221.39,133.75,0" TextWrapping="Wrap" Text="Parties gagnées: " VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_grade" Height="23" Margin="0,60.39,78.25,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_nb_point" Height="23" Margin="0,83.39,-13.25,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_nb_participation" Height="23" Margin="0,106.39,28.75,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="91.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_kill" Height="23" Margin="0,152.39,-26.75,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_death" Height="23" Margin="0,175.39,-46.25,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_assist" Margin="0,198.39,-40.25,0" TextWrapping="Wrap" Text="Grade_rep" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right" Height="23" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_next_level" Margin="0,244.39,-38.75,0" TextWrapping="Wrap" Text="Grade_rep" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right" Height="23" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy7" HorizontalAlignment="Right" Height="23" Margin="0,244.39,133.75,0" TextWrapping="Wrap" Text="Prochain niveau dans:" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_partie_won" Height="23" Margin="0,221.39,5.5,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy8" HorizontalAlignment="Right" Height="23" Margin="0,129.39,133.75,0" TextWrapping="Wrap" Text="Ratio moyen : " VerticalAlignment="Top" Width="190.5" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_ratio" Height="23" Margin="0,129,24.133,0" TextWrapping="Wrap" Text="Grade_rep" VerticalAlignment="Top" Width="190" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Right"/>
+            <Button x:Name="button_detail_joueurs_partie" Content="&gt;&gt;&gt;" HorizontalAlignment="Right" Height="18" Margin="0,0,30.25,305.182" VerticalAlignment="Bottom" Width="33" ToolTip="Ajouter un joueur" MouseLeftButtonDown="button_detail_joueurs_partie_MouseLeftButtonDown" Style="{DynamicResource ButtonStyle23}" Background="#FF33444F" Foreground="#FF5C9CAB"/>
+            <chartingToolkit:Chart x:Name="Ratio_chart" Margin="26,0,499.133,9.572" VerticalAlignment="Bottom" Height="283" Title="Evolution du ratio au cours des parties" Foreground="#FF7A99BA" BorderBrush="#FF456B82">
+                <chartingToolkit:AreaSeries x:Name="Ratio_area_series" DependentValuePath="Value" IndependentValuePath="Key" IsSelectionEnabled="True" Title="Ratio"/>
+            </chartingToolkit:Chart>
+            <chartingToolkit:Chart x:Name="NB_point_chart" Margin="519,0,13.133,9.572" VerticalAlignment="Bottom" Height="283" Title="Evolution du nombre de points" Foreground="#FF7A99BA" BorderBrush="#FF456B82">
+                <chartingToolkit:AreaSeries x:Name="Nb_point_area_series" DependentValuePath="Value" IndependentValuePath="Key" IsSelectionEnabled="True" Title="Nb points" Foreground="#FFBA867A">
+                    <chartingToolkit:AreaSeries.Background>
+                        <RadialGradientBrush Center="0.075,0.015" GradientOrigin="-0.1,-0.1" RadiusY="0.9" RadiusX="1.05">
+                            <GradientStop Color="#FFB9D6F7"/>
+                            <GradientStop Color="#FF702F28" Offset="1"/>
+                        </RadialGradientBrush>
+                    </chartingToolkit:AreaSeries.Background>
+                </chartingToolkit:AreaSeries>
+            </chartingToolkit:Chart>
         </Grid>
         <Grid x:Name="panel_trophe" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_trophe" Fill="#FF33444F" Margin="0,-1,10.133,-0.428" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
@@ -2393,7 +2472,7 @@
             <TextBlock x:Name="Text_Condition_obtention_trophe" HorizontalAlignment="Left" Height="23" Margin="244,72,0,0" TextWrapping="Wrap" Text="Conditions d'obtention" VerticalAlignment="Top" Width="240" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline"/>
             <TextBox x:Name="textBox_condition_trophe" HorizontalAlignment="Left" Height="218" Margin="244,120,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="408" Background="#FF02132B" Opacity="0.5" Foreground="#FFAACBEE" FontSize="18.667"/>
         </Grid>
-        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_partie" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
             <DataGrid x:Name="partie_datagrid" HorizontalAlignment="Right" Margin="0,23,10.133,106.572" Width="328" Background="#FF33444F" Foreground="#FF7A99C7" FontFamily="Rockwell" FontSize="18.667" MinColumnWidth="155" MaxColumnWidth="200" IsReadOnly="True" IsTextSearchCaseSensitive="True" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" RowBackground="#FF1B2C3D" SelectionMode="Single" CanUserResizeRows="False">
                 <DataGrid.Columns>
@@ -2401,7 +2480,7 @@
                     <DataGridTextColumn x:Name="Date_partie" Binding="{Binding Date}" ClipboardContentBinding="{Binding Date}" Header="Date" Foreground="#FF5077B0"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Popup x:Name="Popup_Resultats_partie" Margin="0,0,0.133,-264.428" AllowsTransparency="True" Placement="Absolute" IsManipulationEnabled="True" PopupAnimation="Slide" d:IsHidden="True">
+            <Popup x:Name="Popup_Resultats_partie" Margin="0,0,0.133,-264.428" AllowsTransparency="True" Placement="Absolute" IsManipulationEnabled="True" PopupAnimation="Slide">
                 <Grid x:Name="Popup_content_Rens_Joueur2" Height="588.77" Width="934.274" RenderTransformOrigin="0.5,0.5" IsManipulationEnabled="True">
                     <Grid.RenderTransform>
                         <TransformGroup>

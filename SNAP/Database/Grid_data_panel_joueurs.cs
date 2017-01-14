@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using SNAP.Database;
 
 
+
 namespace SNAP
 {
     public class Grid_data_panel_joueurs
@@ -80,7 +81,7 @@ namespace SNAP
                     Nombre_de_participation = 0,
                     Nom_classement = "Niveau 0",
                     Nb_parties_won = 0,
-                    classement = 0,
+                    classement = 9999,
                 };
 
                 Contexte_database.Table_Joueurs.Add(Joueur);
@@ -191,7 +192,7 @@ namespace SNAP
 
 
         }
-        public void Update_Suppartie(SNAP_DATABASE Contexte_database, string nom_partie)
+        public void Update_Suppartie(SNAP_DATABASE Contexte_database, string nom_partie,Statistiques Stats_SNAP)
         {
 
             //récupérer la liste des joueurs présents à l apartie.
@@ -203,18 +204,21 @@ namespace SNAP
                 var nb_kill_partie = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_kill FROM Entity_Occurence WHERE Joueurs_ID ='" + nom_joueur_liste[i] + "' AND Partie_ID ='" + nom_partie + "'");
                 var nb_death_partie = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_death FROM Entity_Occurence WHERE Joueurs_ID ='" + nom_joueur_liste[i] + "' AND Partie_ID ='" + nom_partie + "'");
                 var nb_assist_partie = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_assist FROM Entity_Occurence WHERE Joueurs_ID ='" + nom_joueur_liste[i] + "' AND Partie_ID ='" + nom_partie + "'");
-            
+                var nb_point_delta = Contexte_database.Database.SqlQuery<int?>("SELECT Delta_point FROM Entity_Occurence WHERE Joueurs_ID ='" + nom_joueur_liste[i] + "' AND Partie_ID ='" + nom_partie + "'");
+                var Best_player= Contexte_database.Database.SqlQuery<string>("SELECT Best_player FROM Entity_Occurence WHERE Joueurs_ID ='" + nom_joueur_liste[i] + "' AND Partie_ID ='" + nom_partie + "'");
 
                 //récupérer les stats avant la suppression de cette partie afin de pouvoir les soustraire.
                 var nb_kill = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_kill_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'");
                 var nb_death = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_death_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'");
                 var nb_assist = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_assistance_tot FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'");
                 var nb_participation = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_de_participation FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'");
+                var nb_point_tot = Contexte_database.Database.SqlQuery<int?>("SELECT Nombre_de_point FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'");
+                var nb_parties_won = Contexte_database.Database.SqlQuery<int?>("SELECT Nb_parties_won FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'");
 
 
-                
-                    //calcul des nouvelles stats
-                    int? nbkill_tot = nb_kill.ElementAt(0) - nb_kill_partie.ElementAt(0);
+
+                //calcul des nouvelles stats
+                int? nbkill_tot = nb_kill.ElementAt(0) - nb_kill_partie.ElementAt(0);
                     int? nbdeath_tot = nb_death.ElementAt(0) - nb_death_partie.ElementAt(0);
                     int? nbassist_tot = nb_assist.ElementAt(0) - nb_assist_partie.ElementAt(0);
                     int? nbparticipation_tot = nb_participation.ElementAt(0) - 1;
@@ -229,11 +233,16 @@ namespace SNAP
                         ratio_tot = (float)nbkill_tot.Value / (float)nbdeath_tot.Value;
                         ratio_tot = (float)Math.Round(ratio_tot, 1);
                     }
+                int? nbpointtot = nb_point_tot.ElementAt(0) - nb_point_delta.ElementAt(0);
+                int? nbpartiegain = nb_parties_won.ElementAt(0);
+                if (Best_player.ElementAt(0) == "oui") nbpartiegain = nbpartiegain - 1;
+              
+     
 
                     //mise à jour des stats
 
 
-                    var index_joueur = Contexte_database.Database.SqlQuery<int>("SELECT id FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'").ToList().ElementAt(0);
+                var index_joueur = Contexte_database.Database.SqlQuery<int>("SELECT id FROM Entity_Joueurs WHERE Surnom ='" + nom_joueur_liste[i] + "'").ToList().ElementAt(0);
                     var Joueur_tomodify = Contexte_database.Table_Joueurs.Find(index_joueur);
                     Entity_joueurs updatedUser = Joueur_tomodify;
                     updatedUser.Nombre_kill_tot = nbkill_tot;
@@ -241,19 +250,18 @@ namespace SNAP
                     updatedUser.Nombre_assistance_tot = nbassist_tot;
                     updatedUser.Ratio_tot = ratio_tot;
                     updatedUser.Nombre_de_participation = nbparticipation_tot;
-                    // mise à jour et sauvegarde du contexte.
-                    Contexte_database.Entry(Joueur_tomodify).CurrentValues.SetValues(updatedUser);
+                    updatedUser.Nombre_de_point = nbpointtot;
+                    updatedUser.Nb_parties_won = nbpartiegain;
 
-                    /* Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_kill_tot = " + nbkill_tot + " WHERE Surnom ='"+ nom_joueur+"'");
-                      Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_death_tot = " + nbdeath_tot + " WHERE Surnom ='" + nom_joueur + "'");
-                      Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_assistance_tot = " + nbassist_tot + " WHERE Surnom ='" + nom_joueur + "'");
-                     Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Ratio_tot = '"+ratio_tot.ToString()+"' WHERE Surnom ='" + nom_joueur + "'");
-                     Contexte_database.Database.ExecuteSqlCommand("UPDATE Entity_Joueurs SET Nombre_de_participation = " + nbparticipation_tot + " WHERE Surnom ='" + nom_joueur + "'");
-                      Contexte_database.Entry(Joueur_tomodify).Reload();*/
+                // mise à jour et sauvegarde du contexte.
+                Contexte_database.Entry(Joueur_tomodify).CurrentValues.SetValues(updatedUser);
+
+                   
 
                     Contexte_database.SaveChanges();
                 }
-            
+            //appel à la fonction stat permettant de recalculer le classement
+            Stats_SNAP.Classement_joueurs(Contexte_database);
 
 
         }
