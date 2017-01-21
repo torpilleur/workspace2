@@ -621,11 +621,31 @@ namespace SNAP
 
         }
 
-        private void button_detail_joueurs_partie_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void partie_datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //TODO
-        }
+            if (partie_datagrid.SelectedIndex != -1)
+            {
+               string nom_partie=((Grid_data_panel_partie)partie_datagrid.SelectedItem).Nom;
 
-       
+                //récupérer les infos de la partie .
+                var Nb_participant= Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_de_participant FROM Entity_partie WHERE Nom ='" + nom_partie + "'").ElementAt(0);
+                var best_player = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Best_player FROM Entity_partie WHERE Nom ='" + nom_partie + "'").ElementAt(0);
+                
+                var J_docteur = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE Trophe_ID LIKE '%Docteur%' AND Partie_ID ='" + nom_partie + "'").ElementAt(0);
+                var J_FM = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE Trophe_ID LIKE '%Folie meurtrière%' AND Partie_ID ='" + nom_partie + "'").ElementAt(0);
+                var J_MDO = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE Trophe_ID LIKE '%mort dans%' AND Partie_ID ='" + nom_partie + "'").ElementAt(0);
+                var J_PM = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE Trophe_ID LIKE '%Poule mouillée%' AND Partie_ID ='" + nom_partie + "'").ElementAt(0);
+                var J_hero = Ctx_database_SNAP.Database.SqlQuery<string>("SELECT Joueurs_ID FROM Entity_Occurence WHERE Trophe_ID LIKE '%Héros%' AND Partie_ID ='" + nom_partie + "'").ElementAt(0);
+
+                Text_Nb_joueurs.Text = Nb_participant.ToString();
+                Text_gagnant.Text = best_player.ToString();
+                Text_MDO.Text = J_MDO.ToString();
+                Text_Hero.Text = J_hero.ToString();
+                Text_FM.Text = J_FM.ToString();
+                Text_docteur.Text = J_docteur.ToString();
+                Text_PM.Text = J_PM.ToString();
+              
+            }
+        }
     }
 }
