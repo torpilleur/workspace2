@@ -48,17 +48,27 @@ namespace SNAP
         public MainWindow()
         {
             InitializeComponent();
+            panel_partie.Visibility = Visibility.Visible;
+            panel_configuration.Visibility = Visibility.Hidden;
+            panel_joueur.Visibility = Visibility.Hidden;
+            panel_stats.Visibility = Visibility.Hidden;
 
-         
+            //affichage liste de joueurs dans la liste
+            List<Entity_joueurs> List_table_joueur = Ctx_database_SNAP.Table_Joueurs.ToList();
+            //réinitialiser le tableau d'affichage
+            Joueurs_disponibles_list.Items.Clear();
+
+            for (int i = 0; i < List_table_joueur.Count(); i++)
+            {
+                String Surnom = List_table_joueur[i].Surnom;
+                Joueurs_disponibles_list.Items.Add(Surnom);
+            }
+            //afficher la liste des parties
+            Grid_panel_partie.Afficher_Partie(Ctx_database_SNAP, partie_datagrid);
+
         }
 
-        
-
-
-
-
-
-
+   
         /**************************************GESTION DES EVENEMENTS DU SOFT********************************/
 
 
@@ -70,6 +80,16 @@ namespace SNAP
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+        private void Reset_database(SNAP_DATABASE CTX)
+        {
+            
+            if(MessageBox.Show("Etes vous certain de vouloir supprimer toutes les données?","Suppression de données", MessageBoxButton.OKCancel)==MessageBoxResult.OK)
+            {
+                CTX.Database.Delete();
+                Application.Current.Shutdown();
+            }
+           
         }
 
         private void bouton_joueurs_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -100,10 +120,12 @@ namespace SNAP
         private void bouton_trophe_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
-            panel_configuration.Visibility = Visibility.Hidden;
+            panel_configuration.Visibility = Visibility.Visible;
             panel_joueur.Visibility = Visibility.Hidden;
             panel_partie.Visibility = Visibility.Hidden;
             panel_stats.Visibility = Visibility.Hidden;
+           
+
 
         }
 
@@ -531,6 +553,11 @@ namespace SNAP
                 Text_PM.Text = J_PM.ToString();
               
             }
+        }
+
+        private void Reset_SNAP(object sender, MouseButtonEventArgs e)
+        {
+            Reset_database(Ctx_database_SNAP);
         }
     }
 }

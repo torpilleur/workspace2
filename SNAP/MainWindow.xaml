@@ -1378,7 +1378,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-       
+
         <Style x:Key="ButtonStyle14" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -1794,16 +1794,84 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ButtonStyle13" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid MouseLeftButtonDown="Reset_SNAP">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="52*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="click_me">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <RadialGradientBrush>
+                                                            <GradientStop Color="Black" Offset="0"/>
+                                                            <GradientStop Color="#FFF509AA" Offset="1"/>
+                                                        </RadialGradientBrush>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="click_me">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="Black" Offset="0"/>
+                                                            <GradientStop Color="#FF665962" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="click_me" RadiusY="8.769" RadiusX="8.769" Stroke="Black" Grid.ColumnSpan="2">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF2B051A" Offset="0"/>
+                                        <GradientStop Color="#FF860F50" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="26.84,0.646,20.713,0.646"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Window.Resources>
     <Grid x:Name="panel_general">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="416*"/>
+            <RowDefinition Height="285*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="497*"/>
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Fill="#FF021D44" Margin="10,7.417,-9.667,19.428" Stroke="White" RadiusY="8.769" RadiusX="8.769" Opacity="0.75" StrokeThickness="2" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
-        <Button x:Name="Close_button" Content="  X" Height="20.666" Margin="0,4.584,-9.304,0" Style="{DynamicResource ButtonClose}" VerticalAlignment="Top" RenderTransformOrigin="0.453,0.524" HorizontalAlignment="Right" Width="21.333" IsCancel="True" IsDefault="True" FontFamily="Vrinda" FontWeight="Bold" Foreground="#FFFBF4F4" BorderThickness="10,10,10,9" Click="button_Click" d:LayoutOverrides="HorizontalAlignment"/>
-        <TextBlock x:Name="nom_application" Height="34" Margin="73,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="SNAP_application" FontSize="21.333" FontFamily="Comic Sans MS" HorizontalAlignment="Left" Width="182.333">
+        <Rectangle Fill="#FF021D44" Margin="1,0,37,30" Stroke="White" RadiusY="8.769" RadiusX="8.769" Opacity="0.75" StrokeThickness="2" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Button x:Name="Close_button" Content="  X" Height="20" Margin="0,0,37,0" Style="{DynamicResource ButtonClose}" VerticalAlignment="Top" RenderTransformOrigin="0.453,0.524" HorizontalAlignment="Right" Width="21" IsCancel="True" IsDefault="True" FontFamily="Vrinda" FontWeight="Bold" Foreground="#FFFBF4F4" BorderThickness="10,10,10,9" Click="button_Click" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="nom_application" Height="34" Margin="64,7,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="SNAP_application" FontSize="21.333" FontFamily="Comic Sans MS" HorizontalAlignment="Left" Width="183">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FFC6E8EE" Offset="1"/>
@@ -1812,13 +1880,13 @@
                     <GradientStop Color="#FF26D0DE" Offset="0.861"/>
                 </LinearGradientBrush>
             </TextBlock.Foreground></TextBlock>
-        <Ellipse x:Name="icone_appli" HorizontalAlignment="Left" Height="51" Stroke="White" StrokeThickness="2" VerticalAlignment="Top" Width="58">
+        <Ellipse x:Name="icone_appli" HorizontalAlignment="Left" Height="51" Stroke="White" StrokeThickness="2" VerticalAlignment="Top" Width="58" Margin="1,0,0,0">
             <Ellipse.Fill>
                 <ImageBrush ImageSource="icone_appli.png"/>
             </Ellipse.Fill>
         </Ellipse>
-        <Grid x:Name="panel_button_general" HorizontalAlignment="Right" Margin="0,114.681,0,115.75" Width="91.867">
-            <Rectangle x:Name="visuel_panel__button_general" Fill="#FF021025" RadiusY="8.769" RadiusX="8.769" StrokeThickness="2" Opacity="0.8" Margin="0,0,-0.133,45.569"/>
+        <Grid x:Name="panel_button_general" HorizontalAlignment="Right" Margin="0,115,0,116" Width="92" Grid.RowSpan="2">
+            <Rectangle x:Name="visuel_panel__button_general" Fill="#FF021025" RadiusY="8.769" RadiusX="8.769" StrokeThickness="2" Opacity="0.8" Margin="0,0,-5,46"/>
             <Button x:Name="bouton_joueurs" Content="" Height="52" Margin="21,43,18.867,0" Style="{DynamicResource bouton_joueur}" VerticalAlignment="Top" ToolTip="JOUEURS">
                 <Button.Background>
                     <ImageBrush ImageSource="icone_compte.png"/>
@@ -1905,7 +1973,7 @@
                                 <ControlTemplate TargetType="{x:Type Button}">
                                     <Grid x:Name="bouton_trophe" MouseLeftButtonDown="bouton_trophe_MouseLeftButtonDown">
                                         <Grid.Background>
-                                            <ImageBrush ImageSource="terrain-ville_008.jpg"/>
+                                            <ImageBrush ImageSource="19682.png" Stretch="Uniform"/>
                                         </Grid.Background>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
@@ -2044,8 +2112,8 @@
                 </Button.Background>
             </Button>
         </Grid>
-        <Grid x:Name="panel_joueur" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
-            <Rectangle x:Name="visuel_panel_joueur" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Fill="#FF33444F" Stroke="#FFB1F97E"/>
+        <Grid x:Name="panel_joueur" Margin="26,0,109,58" Height="596" VerticalAlignment="Bottom" Grid.RowSpan="2">
+            <Rectangle x:Name="visuel_panel_joueur" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Fill="#FF33444F" Stroke="#FF4B0000"/>
             <Grid x:Name="panel_bouton_joueur" HorizontalAlignment="Left" Margin="10,87,0,100.572" Width="98">
                 <Rectangle x:Name="visual_panel_bouton_joueur" RadiusY="21" RadiusX="21" StrokeThickness="2" Fill="#FF02132B" Opacity="0.5" HorizontalAlignment="Right" Margin="0,-80,-819.5,0" Width="842" Height="55.5" VerticalAlignment="Top"/>
                 <Button x:Name="button_ajouter_joueur" Content="Ajouter" HorizontalAlignment="Right" Height="34.5" Margin="0,-72.5,-233.5,0" VerticalAlignment="Top" Width="163" Style="{DynamicResource ButtonStyle1}" FontSize="18.667" FontFamily="Lucida Calligraphy" Foreground="#FFF1F0F0"/>
@@ -2114,7 +2182,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid x:Name="panel_stats" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom">
+        <Grid x:Name="panel_stats" Margin="26,0,109,58" Height="596" VerticalAlignment="Bottom" Grid.RowSpan="2" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_stats" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
             <DataGrid x:Name="dataGrid_stats" HorizontalAlignment="Left" Margin="25.5,14.5,0,0" VerticalAlignment="Top" Height="288.072" Width="654.5" Background="#FF33444F" Foreground="#FF1F4D93" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False" FontSize="18.667" FontFamily="Rockwell" MaxColumnWidth="200" IsReadOnly="True" IsTextSearchCaseSensitive="True" RowBackground="#FF1B2C3D" SelectionMode="Single" BorderBrush="#FF5C9CC5" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" ColumnWidth="400" SelectionChanged="dataGrid_stats_SelectionChanged" SelectedIndex="0" IsSynchronizedWithCurrentItem="False">
                 <DataGrid.Columns>
@@ -2159,10 +2227,16 @@
                 </chartingToolkit:AreaSeries>
             </chartingToolkit:Chart>
         </Grid>
-        <Grid x:Name="panel_configuration" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
-            <Rectangle x:Name="visuel_panel_configuration" Fill="#FF33444F" Margin="0,-1,10.133,-0.428" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
+        <Grid x:Name="panel_configuration" Margin="26,0,109,58" Height="596" VerticalAlignment="Bottom" Grid.RowSpan="2" d:IsHidden="True">
+            <Rectangle x:Name="visuel_panel_configuration" Fill="#FF33444F" Margin="10,-1,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
+            <Button x:Name="button_Reset_DB" Content="Reset SNAP" Height="34.5" Margin="125,248,0,0" VerticalAlignment="Top" Style="{DynamicResource ButtonStyle13}" FontSize="18.667" FontFamily="Lucida Calligraphy" Foreground="#FFF1F0F0" HorizontalAlignment="Left" Width="187" ToolTip="Suppression de toutes les données"/>
+            <Rectangle x:Name="visuel_panel_stats_Joueur_Copy" Fill="#FF193649" Margin="26,30.39,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF193649" Height="193" VerticalAlignment="Top" HorizontalAlignment="Left" Width="412.5"/>
+            <TextBlock x:Name="Text_title_resetDB" Height="23" Margin="125,33.39,0,0" TextWrapping="Wrap" Text="Reset SNAP" VerticalAlignment="Top" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="18.667" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Left" Width="190.5"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_Copy18" Height="23" Margin="41,106.39,0,0" TextWrapping="Wrap" Text="Note:" VerticalAlignment="Top" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF7A99C7" FontSize="16" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Left" Width="190.5"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_grade_Copy" Height="27.5" Margin="41,73.89,0,0" TextWrapping="Wrap" Text="Le reset permet une suppression totale des données." VerticalAlignment="Top" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Left" Width="397.5"/>
+            <TextBlock x:Name="Text_title_panel_detail_joueur_grade_Copy1" Height="92" Margin="41,134.39,0,0" TextWrapping="Wrap" Text="Un redémarrage de l'application est necessaire suite à une remise à zéro. L'application se fermera automatiquement." VerticalAlignment="Top" ToolTip="Sélectionner les joueurs qui composent la partie" Foreground="#FF5C9CC5" FontSize="16" TextDecorations="{x:Null}" HorizontalAlignment="Left" Width="376.5"/>
         </Grid>
-        <Grid x:Name="panel_partie" Margin="26,0,108.867,58.428" Height="595.572" VerticalAlignment="Bottom" d:IsHidden="True">
+        <Grid x:Name="panel_partie" Margin="26,0,109,58" Height="596" VerticalAlignment="Bottom" Grid.RowSpan="2" d:IsHidden="True">
             <Rectangle x:Name="visuel_panel_partie" Fill="#FF33444F" Margin="10,0,0,0" RadiusY="29" RadiusX="29" StrokeThickness="2" Stroke="#FF4B0000"/>
             <DataGrid x:Name="partie_datagrid" Margin="411,23,278.75,106.572" Background="#FF33444F" Foreground="#FF7A99C7" FontFamily="Rockwell" FontSize="18.667" MinColumnWidth="155" MaxColumnWidth="200" IsReadOnly="True" IsTextSearchCaseSensitive="True" HorizontalGridLinesBrush="#FFB2BBE8" VerticalGridLinesBrush="#FFB2BBE8" RowBackground="#FF1B2C3D" SelectionMode="Single" CanUserResizeRows="False" SelectionChanged="partie_datagrid_SelectionChanged">
                 <DataGrid.Columns>

@@ -22,7 +22,7 @@
         // sur la configuration et l'utilisation du modèle Code First, consultez http://go.microsoft.com/fwlink/?LinkId=390109.
         public virtual DbSet<Entity_joueurs> Table_Joueurs { get; set; }
         public virtual DbSet<Entity_partie> Table_Parties { get; set; }
-        public virtual DbSet<Entity_trophes> Table_Trophes { get; set; }
+ 
         public virtual DbSet<Entity_Classement_Nom> Table_Classement_Nom { get; set; }
         public virtual DbSet<Entity_Occurence> Table_Occurence { get; set; }
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
@@ -60,14 +60,7 @@
         
 
     }
-    public class Entity_trophes
-    {
-        public int ID { get; set; }
-
-        public string Nom { get; set; }
-        public string Condition_attribution { get; set; }
-
-    }
+  
     public class Entity_Classement_Nom
     {
         public int ID { get; set; }

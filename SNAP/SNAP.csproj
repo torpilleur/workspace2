@@ -221,7 +221,6 @@
     <Compile Include="click me control.xaml.cs">
       <DependentUpon>click me control.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Database\Grid_data_panel_trophe.cs" />
     <Compile Include="Database\SNAP_DATABASE.cs" />
     <Compile Include="Algorithme\Statistiques.cs" />
     <Compile Include="Grid_Ratio_chart.cs" />
@@ -250,6 +249,10 @@
     <Compile Include="Migrations\201612301523365_classement.cs" />
     <Compile Include="Migrations\201612301523365_classement.Designer.cs">
       <DependentUpon>201612301523365_classement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701220910014_suptrophe.cs" />
+    <Compile Include="Migrations\201701220910014_suptrophe.Designer.cs">
+      <DependentUpon>201701220910014_suptrophe.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -280,6 +283,9 @@
     <EmbeddedResource Include="Migrations\201612301523365_classement.resx">
       <DependentUpon>201612301523365_classement.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701220910014_suptrophe.resx">
+      <DependentUpon>201701220910014_suptrophe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -308,6 +314,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="terrain-ville_008.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="19682.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
