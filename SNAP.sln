@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SNAP", "SNAP\SNAP.csproj", "{F858DCBE-0B5D-475E-8E3C-E5BA3EB99332}"
 EndProject
-Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup_SNAP", "Setup_SNAP\Setup_SNAP.isproj", "{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -26,16 +24,6 @@ Global
 		{F858DCBE-0B5D-475E-8E3C-E5BA3EB99332}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F858DCBE-0B5D-475E-8E3C-E5BA3EB99332}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{F858DCBE-0B5D-475E-8E3C-E5BA3EB99332}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.CD_ROM|Any CPU.ActiveCfg = CD_ROM
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.CD_ROM|Any CPU.Build.0 = CD_ROM
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.Debug|Any CPU.ActiveCfg = DVD-5
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.Debug|Any CPU.Build.0 = DVD-5
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.DVD-5|Any CPU.ActiveCfg = DVD-5
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.DVD-5|Any CPU.Build.0 = DVD-5
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.Release|Any CPU.ActiveCfg = SingleImage
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.Release|Any CPU.Build.0 = SingleImage
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.SingleImage|Any CPU.ActiveCfg = SingleImage
-		{46EE2BB2-9C3A-4551-97A4-EDEDD0D13596}.SingleImage|Any CPU.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

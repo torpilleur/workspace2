@@ -26,8 +26,8 @@ namespace SNAP.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\damien\\Source\\Repos\\" +
-            "Workspace\\SNAP\\database2.mdf;Integrated Security=True;Connect Timeout=30")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Program Files (x86)\\SNAP\\" +
+            "SNAP\\database2.mdf;Integrated Security=True;Connect Timeout=30")]
         public string database2ConnectionString {
             get {
                 return ((string)(this["database2ConnectionString"]));

@@ -43,7 +43,7 @@ namespace SNAP
 
         public string[] Liste_Nom_classements = new string[24] { "Niveau0", "Débutant total", "Débutant", "Inexpérimenté", "Bleu", "Novice", "Sous la moyenne", "Dans la moyenne", "Niveau raisonnable", "Au dessus de la moyenne", "Assez compétent", "Compétent", "Extrêmement compétent", "Vétéran", "Remarquable", "Extrêmement remarquable", "Général", "Commandant", "Maréchal", "Héros", "Superstar", "pilier de guerre", "Elite", "Légende" };
         public int[] Liste_Niveau_classements = new int[24] { 0, 1, 4, 8, 12, 20, 28, 35, 50, 65, 80, 95, 115, 130, 145, 180, 220, 270, 320, 400, 500, 600, 800, 1000 };
-        //liste des classements (nom + nbpointref)
+ 
 
         public MainWindow()
         {
@@ -510,6 +510,24 @@ namespace SNAP
                 var Nb_parties_won = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nb_parties_won FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
                 var Nombre_de_point = Ctx_database_SNAP.Database.SqlQuery<int?>("SELECT Nombre_de_point FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
                 var Ratio_tot = Ctx_database_SNAP.Database.SqlQuery< float?> ("SELECT Ratio_tot FROM Entity_Joueurs WHERE Surnom ='" + surnom_selected + "'").ElementAt(0);
+                //calcul du nombre de point manquant pour le prochain niveau.
+                // niveau actuel du joueur
+                var level_J = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT Niveau FROM Entity_joueurs WHERE Surnom = '" + surnom_selected + "'").ToList().ElementAt(0);
+                //nombre de point actuel:
+                var Point_J = Ctx_database_SNAP.Database.SqlQuery<int>("SELECT Nombre_de_point FROM Entity_joueurs WHERE Surnom = '" + surnom_selected + "'").ToList().ElementAt(0);
+                //Nombre de point de reference du niveau suivant:
+                int nb_ref_point = 0;
+                int point_next_level=0;
+                if (level_J == 24)
+                {
+                    Text_title_panel_detail_joueur_next_level.Text = "Le niveau maximal est atteint";
+                }
+                else
+                {
+                     nb_ref_point = Liste_Niveau_classements[level_J];
+                     point_next_level = nb_ref_point - Point_J;
+                }
+               
 
                 Text_title_panel_detail_joueur_grade.Text = grade;
                 Text_title_panel_detail_joueur_kill.Text = nb_kill.ToString();
@@ -520,7 +538,7 @@ namespace SNAP
                 Text_title_panel_detail_joueur_nb_participation.Text = nb_participation.ToString();
                 Text_title_panel_detail_joueur.Text = surnom_selected;
                 Text_title_panel_detail_joueur_ratio.Text = Ratio_tot.ToString();
-
+                Text_title_panel_detail_joueur_next_level.Text = point_next_level.ToString()+" points";
                 Data_Ratio_chart.Afficher_Graphique(Ctx_database_SNAP, Ratio_area_series,Nb_point_area_series,Text_title_panel_detail_joueur.Text);
               
 
